@@ -23,27 +23,15 @@ namespace Compiler
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<bool> changesFlag = new List<bool>();//флаги изменений
+        private List<bool> saveFlag = new List<bool>();//флаги предшествующего сохранения
         public MainWindow()
         {
             InitializeComponent();
+            Create(null, null);//создание базового окна
         }
-
-        private bool saveFlag = false;
-        private bool changesFlag = false;
-        private void Create(object sender, RoutedEventArgs e)
+        private void OutputMsg(string text)
         {
-
-            //if (changesFlag)
-            tabs.Items.Add(new TabItem { 
-                Header = new TextBlock {Text="Безымянный.mupl" },
-                Content = new RichTextBox { Margin=new Thickness(5)}
-            });
-            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as RichTextBox).KeyDown += Input_KeyDown;
-            saveFlag = false;
-            changesFlag = false;
-        }
-
-        private void OutputMsg(string text) {
             output.Document.Blocks.Clear();
             output.Document.Blocks.Add(new Paragraph(new Run(text)));
         }
@@ -55,6 +43,25 @@ namespace Compiler
             );
             return textRange.Text;
         }
+        
+        void TabCreat(string name)//добавление новой вкладки
+        {
+            tabs.Items.Add(new TabItem
+            {
+                Header = new TextBlock { Text = name },
+                Content = new RichTextBox { Margin = new Thickness(5) }
+            });
+            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as RichTextBox).KeyDown += Input_KeyDown;
+        }
+
+        private void Create(object sender, RoutedEventArgs e)
+        {
+            TabCreat("Безымянный.mupl");
+            changesFlag.Add(false);
+            saveFlag.Add(false);
+        }
+
+        
         private void Open(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -62,14 +69,11 @@ namespace Compiler
             {
                 try
                 {
-                    tabs.Items.Add(new TabItem
-                    {
-                        Header = new TextBlock { Text = ofd.FileName },
-                        Content = new RichTextBox { Margin = new Thickness(5) }
-                    });
-                    ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as RichTextBox).KeyDown += Input_KeyDown;
+                    TabCreat(ofd.FileName);
                     ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as RichTextBox).Document.Blocks.Add(new Paragraph(new Run(File.ReadAllText(ofd.FileName))));
                     OutputMsg("Успешно");
+                    saveFlag.Add(true);
+                    changesFlag.Add(false);
                 }
                 catch (FileFormatException exc) { OutputMsg( "Неверный формат файла"); }
                 catch (FileLoadException exc) { OutputMsg("Файл не может быть заргужен"); }
@@ -79,7 +83,7 @@ namespace Compiler
 
         private void Save(object sender, RoutedEventArgs e)
         {
-            if (saveFlag) { SaveAs(sender, e); return; }
+            if (!saveFlag[tabs.SelectedIndex]) { SaveAs(sender, e); return; }
             else {
                 try
                 {
@@ -101,17 +105,38 @@ namespace Compiler
         private void SaveAs(object sender, RoutedEventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
+            sfd.AddExtension = true;
+            sfd.Filter = "mupl files (*.mupl)|*.mupl|txt files (*.txt)|*.txt";
+            sfd.RestoreDirectory = true;
             if (sfd.ShowDialog() == true)
             {
-                File.WriteAllText(sfd.FileName, (new TextRange(input.Document.ContentStart, input.Document.ContentEnd)).Text);
-                output.Document.Blocks.Add(new Paragraph(new Run("Успешно")));
-                this.Title = sfd.FileName;
+                TabItem tab = tabs.SelectedItem as TabItem;
+                RichTextBox rtb = tab.Content as RichTextBox;
+                File.WriteAllText(sfd.FileName, StringFromRichTextBox(rtb));
+                OutputMsg("Успешно");
+                (tab.Header as TextBlock).Text = sfd.FileName;
             }
         }
 
         private void Input_KeyDown(object sender, KeyEventArgs e)
         {
-            changesFlag = true;
+            changesFlag[tabs.SelectedIndex] = true;
+        }
+
+        private void main_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            for (int i = 0; i < tabs.Items.Count; ++i) {
+                if (changesFlag[i])
+                {
+                    tabs.SelectedIndex = i;
+                    Save(null, null);
+                }
+            }
+        }
+
+        private void Exit(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

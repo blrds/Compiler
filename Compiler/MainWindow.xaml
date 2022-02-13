@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Compiler"
         mc:Ignorable="d"
-        Title="Compiler" Height="450" Width="800" Name="main">
+        Title="Compiler" Height="450" Width="800" Name="main" Closing="main_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -39,7 +39,7 @@
                         <TextBlock Text="Сохранить как"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="exit">
+                <MenuItem Name="exit" Click="Exit">
                     <MenuItem.Header>
                         <TextBlock Text="Выход"/>
                     </MenuItem.Header>
@@ -49,7 +49,7 @@
                 <MenuItem.Header>
                     <TextBlock Text="Правка"/>
                 </MenuItem.Header>
-                <MenuItem Name="cancle">
+                <MenuItem Name="cancel">
                     <MenuItem.Header>
                         <TextBlock Text="Отменить"/>
                     </MenuItem.Header>
@@ -179,14 +179,7 @@
             </Button>
         </ToolBar>
         <TabControl Grid.Row="2" Name="tabs">
-            <TabItem>
-                <TabItem.Header>
-                    <TextBlock Text="Безымянный.mspl"/>
-                </TabItem.Header>
-                <RichTextBox Margin="5" Name="input" KeyDown="Input_KeyDown">
-
-                </RichTextBox>
-            </TabItem>
+            
             
         </TabControl>
         <GridSplitter Grid.Row="3" Height="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Black"/>
