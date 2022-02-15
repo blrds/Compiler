@@ -32,16 +32,7 @@ namespace Compiler
         }
         private void OutputMsg(string text)
         {
-            output.Document.Blocks.Clear();
-            output.Document.Blocks.Add(new Paragraph(new Run(text)));
-        }
-        string StringFromRichTextBox(RichTextBox rtb)
-        {
-            TextRange textRange = new TextRange(
-                rtb.Document.ContentStart,
-                rtb.Document.ContentEnd
-            );
-            return textRange.Text;
+            output.Text=text;
         }
         
         void TabCreat(string name)//добавление новой вкладки
@@ -49,9 +40,11 @@ namespace Compiler
             tabs.Items.Add(new TabItem
             {
                 Header = new TextBlock { Text = name },
-                Content = new RichTextBox { Margin = new Thickness(5) }
+                Content = new TextBox { Margin = new Thickness(5), TextWrapping=TextWrapping.Wrap, AcceptsReturn=true, AllowDrop=true}
             });
-            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as RichTextBox).KeyDown += Input_KeyDown;
+            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextBox).KeyDown += Input_KeyDown;
+            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextBox).Drop += main_Drop;
+            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextBox).PreviewDragOver += main_PreviewDragOver;
         }
 
         private void Create(object sender, RoutedEventArgs e)
@@ -61,7 +54,13 @@ namespace Compiler
             saveFlag.Add(false);
         }
 
-        
+        private void OpenFile(string file) {
+            TabCreat(file);
+            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextBox).Text = File.ReadAllText(file);
+            OutputMsg("Успешно");
+            saveFlag.Add(true);
+            changesFlag.Add(false);
+        }
         private void Open(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -69,11 +68,7 @@ namespace Compiler
             {
                 try
                 {
-                    TabCreat(ofd.FileName);
-                    ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as RichTextBox).Document.Blocks.Add(new Paragraph(new Run(File.ReadAllText(ofd.FileName))));
-                    OutputMsg("Успешно");
-                    saveFlag.Add(true);
-                    changesFlag.Add(false);
+                    OpenFile(ofd.FileName);
                 }
                 catch (FileFormatException exc) { OutputMsg( "Неверный формат файла"); }
                 catch (FileLoadException exc) { OutputMsg("Файл не может быть заргужен"); }
@@ -88,9 +83,9 @@ namespace Compiler
                 try
                 {
                     TabItem tabItem = tabs.SelectedItem as TabItem;
-                    RichTextBox rtb = tabItem.Content as RichTextBox;
+                    TextBox tb = tabItem.Content as TextBox;
                     
-                    File.WriteAllText((tabItem.Header as TextBlock).Text, StringFromRichTextBox(rtb));
+                    File.WriteAllText((tabItem.Header as TextBlock).Text, tb.Text);
                 }
                 catch (ArgumentException exp) { OutputMsg("Данный путь недопустим или содержит недопустимые символы"); }
                 catch (PathTooLongException exp) { OutputMsg("Путь или имя файла превышают допустимую длину"); }
@@ -111,8 +106,8 @@ namespace Compiler
             if (sfd.ShowDialog() == true)
             {
                 TabItem tab = tabs.SelectedItem as TabItem;
-                RichTextBox rtb = tab.Content as RichTextBox;
-                File.WriteAllText(sfd.FileName, StringFromRichTextBox(rtb));
+                TextBox tb = tab.Content as TextBox;
+                File.WriteAllText(sfd.FileName, tb.Text);
                 OutputMsg("Успешно");
                 (tab.Header as TextBlock).Text = sfd.FileName;
             }
@@ -137,6 +132,59 @@ namespace Compiler
         private void Exit(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void main_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                foreach (var file in files) {
+                    FileInfo fi = new FileInfo(file);
+                    if ((fi.Extension == ".txt") || (fi.Extension == ".mupl"))
+                        OpenFile(file);
+                }
+            }
+        }
+        private void main_PreviewDragOver(object sender, DragEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void cancel_Click(object sender, RoutedEventArgs e)
+        {
+            ((tabs.SelectedItem as TabItem).Content as TextBox).Undo();
+        }
+
+        private void repeat_Click(object sender, RoutedEventArgs e)
+        {
+            ((tabs.SelectedItem as TabItem).Content as TextBox).Redo();
+        }
+
+        private void erase_Click(object sender, RoutedEventArgs e)
+        {
+            ((tabs.SelectedItem as TabItem).Content as TextBox).Cut();
+        }
+
+        private void copy_Click(object sender, RoutedEventArgs e)
+        {
+            ((tabs.SelectedItem as TabItem).Content as TextBox).Copy();
+        }
+
+        private void insert_Click(object sender, RoutedEventArgs e)
+        {
+            ((tabs.SelectedItem as TabItem).Content as TextBox).Paste();
+        }
+
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            ((tabs.SelectedItem as TabItem).Content as TextBox).SelectedText = "";
+        }
+
+        private void selectAll_Click(object sender, RoutedEventArgs e)
+        {
+            ((tabs.SelectedItem as TabItem).Content as TextBox).SelectAll();
         }
     }
 }

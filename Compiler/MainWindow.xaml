@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Compiler"
         mc:Ignorable="d"
         Title="Compiler" Height="450" Width="800" Name="main" Closing="main_Closing">
-    <Grid>
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="40"/>
@@ -49,37 +49,37 @@
                 <MenuItem.Header>
                     <TextBlock Text="Правка"/>
                 </MenuItem.Header>
-                <MenuItem Name="cancel">
+                <MenuItem Name="cancel" Click="cancel_Click">
                     <MenuItem.Header>
                         <TextBlock Text="Отменить"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="repeat">
+                <MenuItem Name="repeat" Click="repeat_Click">
                     <MenuItem.Header>
                         <TextBlock Text="Повторить"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="erase">
+                <MenuItem Name="erase" Click="erase_Click">
                     <MenuItem.Header>
                         <TextBlock Text="Вырезать"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="copy">
+                <MenuItem Name="copy" Click="copy_Click">
                     <MenuItem.Header>
                         <TextBlock Text="Копировать"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="insert">
+                <MenuItem Name="insert" Click="insert_Click">
                     <MenuItem.Header>
                         <TextBlock Text="Вставить"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="delete">
+                <MenuItem Name="delete" Click="delete_Click">
                     <MenuItem.Header>
                         <TextBlock Text="Удалить"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="selectAll">
+                <MenuItem Name="selectAll" Click="selectAll_Click">
                     <MenuItem.Header>
                         <TextBlock Text="Выделить все"/>
                     </MenuItem.Header>
@@ -179,12 +179,11 @@
             </Button>
         </ToolBar>
         <TabControl Grid.Row="2" Name="tabs">
-            
-            
+           
         </TabControl>
         <GridSplitter Grid.Row="3" Height="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Black"/>
-        <RichTextBox Grid.Row="4" Margin="5" IsReadOnly="True" Name="output">
+        <TextBox Grid.Row="4" Margin="5" IsReadOnly="True" Name="output">
             
-        </RichTextBox>
+        </TextBox>
     </Grid>
 </Window>
