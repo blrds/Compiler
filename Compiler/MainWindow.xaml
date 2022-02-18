@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Compiler"
+        xmlns:local="clr-namespace:Compiler" xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
         Title="Compiler" Height="450" Width="800" Name="main" Closing="main_Closing">
     <Grid >
@@ -182,8 +182,8 @@
            
         </TabControl>
         <GridSplitter Grid.Row="3" Height="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Black"/>
-        <TextBox Grid.Row="4" Margin="5" IsReadOnly="True" Name="output">
-            
-        </TextBox>
+        <avalonEdit:TextEditor Grid.Row="4" Margin="5" IsReadOnly="True" Name="output" ShowLineNumbers="True" SyntaxHighlighting="C#">
+
+        </avalonEdit:TextEditor>
     </Grid>
 </Window>

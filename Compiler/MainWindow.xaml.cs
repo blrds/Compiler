@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using ICSharpCode.AvalonEdit;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,10 +26,12 @@ namespace Compiler
     {
         private List<bool> changesFlag = new List<bool>();//флаги изменений
         private List<bool> saveFlag = new List<bool>();//флаги предшествующего сохранения
+        private CustomHighlightingDefenition muplDefenition;
         public MainWindow()
         {
             InitializeComponent();
             Create(null, null);//создание базового окна
+            muplDefenition = new CustomHighlightingDefenition();
         }
         private void OutputMsg(string text)
         {
@@ -39,12 +42,16 @@ namespace Compiler
         {
             tabs.Items.Add(new TabItem
             {
-                Header = new TextBlock { Text = name },
-                Content = new TextBox { Margin = new Thickness(5), TextWrapping=TextWrapping.Wrap, AcceptsReturn=true, AllowDrop=true}
+                Header = new StackPanel { Orientation=Orientation.Horizontal},
+                Content = new TextEditor { Margin = new Thickness(5),  AllowDrop=true, ShowLineNumbers=true, SyntaxHighlighting=muplDefenition}
             });
-            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextBox).KeyDown += Input_KeyDown;
-            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextBox).Drop += main_Drop;
-            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextBox).PreviewDragOver += main_PreviewDragOver;
+            var sp = ((tabs.Items[tabs.Items.Count - 1] as TabItem).Header as StackPanel);
+            sp.Children.Add(new TextBlock { Text = name });
+            var i = sp.Children.Add(new Button { Content = "X" });
+            (sp.Children[i] as Button).Click += closeTab_Click;
+            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextEditor).KeyDown += Input_KeyDown;
+            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextEditor).Drop += main_Drop;
+            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextEditor).PreviewDragOver += main_PreviewDragOver;
         }
 
         private void Create(object sender, RoutedEventArgs e)
@@ -56,7 +63,7 @@ namespace Compiler
 
         private void OpenFile(string file) {
             TabCreat(file);
-            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextBox).Text = File.ReadAllText(file);
+            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextEditor).Text = File.ReadAllText(file);
             OutputMsg("Успешно");
             saveFlag.Add(true);
             changesFlag.Add(false);
@@ -83,7 +90,7 @@ namespace Compiler
                 try
                 {
                     TabItem tabItem = tabs.SelectedItem as TabItem;
-                    TextBox tb = tabItem.Content as TextBox;
+                    TextEditor tb = tabItem.Content as TextEditor;
                     
                     File.WriteAllText((tabItem.Header as TextBlock).Text, tb.Text);
                 }
@@ -106,7 +113,7 @@ namespace Compiler
             if (sfd.ShowDialog() == true)
             {
                 TabItem tab = tabs.SelectedItem as TabItem;
-                TextBox tb = tab.Content as TextBox;
+                TextEditor tb = tab.Content as TextEditor;
                 File.WriteAllText(sfd.FileName, tb.Text);
                 OutputMsg("Успешно");
                 (tab.Header as TextBlock).Text = sfd.FileName;
@@ -154,37 +161,47 @@ namespace Compiler
 
         private void cancel_Click(object sender, RoutedEventArgs e)
         {
-            ((tabs.SelectedItem as TabItem).Content as TextBox).Undo();
+            ((tabs.SelectedItem as TabItem).Content as TextEditor).Undo();
         }
 
         private void repeat_Click(object sender, RoutedEventArgs e)
         {
-            ((tabs.SelectedItem as TabItem).Content as TextBox).Redo();
+            ((tabs.SelectedItem as TabItem).Content as TextEditor).Redo();
         }
 
         private void erase_Click(object sender, RoutedEventArgs e)
         {
-            ((tabs.SelectedItem as TabItem).Content as TextBox).Cut();
+            ((tabs.SelectedItem as TabItem).Content as TextEditor).Cut();
         }
 
         private void copy_Click(object sender, RoutedEventArgs e)
         {
-            ((tabs.SelectedItem as TabItem).Content as TextBox).Copy();
+            ((tabs.SelectedItem as TabItem).Content as TextEditor).Copy();
         }
 
         private void insert_Click(object sender, RoutedEventArgs e)
         {
-            ((tabs.SelectedItem as TabItem).Content as TextBox).Paste();
+            ((tabs.SelectedItem as TabItem).Content as TextEditor).Paste();
         }
 
         private void delete_Click(object sender, RoutedEventArgs e)
         {
-            ((tabs.SelectedItem as TabItem).Content as TextBox).SelectedText = "";
+            ((tabs.SelectedItem as TabItem).Content as TextEditor).SelectedText = "";
         }
 
         private void selectAll_Click(object sender, RoutedEventArgs e)
         {
-            ((tabs.SelectedItem as TabItem).Content as TextBox).SelectAll();
+            ((tabs.SelectedItem as TabItem).Content as TextEditor).SelectAll();
+        }
+
+        private void closeTab_Click(object sender, RoutedEventArgs e)
+        {
+            var tab = ((sender as Button).Parent as StackPanel).Parent as TabItem;
+            tab.IsSelected = true;
+            var i = tabs.SelectedIndex;
+            if (changesFlag[i])
+                Save(null, null);
+            tabs.Items.Remove(tab);
         }
     }
 }
