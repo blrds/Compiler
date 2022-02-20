@@ -8,7 +8,7 @@ namespace Compiler
 {
     enum ConstructionType { 
         Keyword,
-        Bracket,
+        Brackets,
         Constructions,
         Value,
         Type

@@ -1,0 +1,147 @@
+[
+  {
+    "Code": 0,
+    "Construction": "null",
+    "Type": 3
+  },
+  {
+    "Code": 1,
+    "Construction": "pINF",
+    "Type": 3
+  },
+  {
+    "Code": -1,
+    "Construction": "nINF",
+    "Type": 3
+  },
+  {
+    "Code": -2,
+    "Construction": "NaN",
+    "Type": 3
+  },
+  {
+    "Code": -2,
+    "Construction": "NaN",
+    "Type": 3
+  },
+  {
+    "Code": -3,
+    "Construction": "\"|\"",
+    "Type": 1
+  },
+  {
+    "Code": -4,
+    "Construction": "/\\*|\\*/",
+    "Type": 1
+  },
+  {
+    "Code": -5,
+    "Construction": "//",
+    "Type": 1
+  },
+  {
+    "Code": 2,
+    "Construction": "int",
+    "Type": 4
+  },
+  {
+    "Code": 3,
+    "Construction": "float",
+    "Type": 4
+  },
+  {
+    "Code": 4,
+    "Construction": "double",
+    "Type": 4
+  },
+  {
+    "Code": 5,
+    "Construction": "string",
+    "Type": 4
+  },
+  {
+    "Code": 6,
+    "Construction": "void",
+    "Type": 4
+  },
+  {
+    "Code": 7,
+    "Construction": "char",
+    "Type": 4
+  },
+  {
+    "Code": 8,
+    "Construction": "bool",
+    "Type": 4
+  },
+  {
+    "Code": 9,
+    "Construction": "true",
+    "Type": 3
+  },
+  {
+    "Code": 10,
+    "Construction": "false",
+    "Type": 3
+  },
+  {
+    "Code": 11,
+    "Construction": "byte",
+    "Type": 4
+  },
+  {
+    "Code": 12,
+    "Construction": "long",
+    "Type": 4
+  },
+  {
+    "Code": 13,
+    "Construction": "uint",
+    "Type": 4
+  },
+  {
+    "Code": 14,
+    "Construction": "ulong",
+    "Type": 4
+  },
+  {
+    "Code": 15,
+    "Construction": "const",
+    "Type": 0
+  },
+  {
+    "Code": 16,
+    "Construction": "break",
+    "Type": 0
+  },
+  {
+    "Code": 17,
+    "Construction": "continue",
+    "Type": 0
+  },
+  {
+    "Code": 18,
+    "Construction": "return",
+    "Type": 0
+  },
+  {
+    "Code": 19,
+    "Construction": "for",
+    "Type": 2
+  },
+  {
+    "Code": 20,
+    "Construction": "while|do",
+    "Type": 2
+  },
+  {
+    "Code": 21,
+    "Construction": "if|else",
+    "Type": 2
+  },
+  {
+    "Code": 22,
+    "Construction": "switch|case|default",
+    "Type": 2
+  }
+]

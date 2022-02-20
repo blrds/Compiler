@@ -1,4 +1,5 @@
 ﻿using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.Highlighting;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
@@ -63,6 +64,7 @@ namespace Compiler
             TabCreat("Безымянный.mupl");
             changesFlag.Add(false);
             saveFlag.Add(false);
+            ((tabs.Items[0] as TabItem).Content as TextEditor).Text = "//ff\nf\n/*ff*/ff\n\"ff\"f";
         }
 
         private void OpenFile(string file) {
@@ -207,14 +209,13 @@ namespace Compiler
                 Save(null, null);
             tabs.Items.Remove(tab);
         }
-
+        
         private void task_Click(object sender, RoutedEventArgs e)
         {
             output.Text = "";
-            List<Regex> test = new List<Regex>();
-            foreach (var a in output.SyntaxHighlighting.MainRuleSet.Spans) {
-                test.Add(a.StartExpression);
-                test.Add(a.EndExpression);
+            List<HighlightingRule> test = new List<HighlightingRule>();
+            foreach (var a in output.SyntaxHighlighting.MainRuleSet.Rules) {
+                test.Add(a);
             }
             using (StreamWriter file = File.CreateText("test.json"))
             {

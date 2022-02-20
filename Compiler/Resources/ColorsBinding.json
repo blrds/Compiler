@@ -1,0 +1,57 @@
+[
+  {
+    "Background": null,
+    "Foreground": { "color": "#FFDB879E" },
+    "HasFamily": false,
+    "HasSize": false,
+    "HasStrikethrough": false,
+    "HasStyle": false,
+    "HasUnderline": false,
+    "HasWeight": false,
+    "Name": "Construction"
+  },
+  {
+    "Name": "String",
+    "HasWeight": false,
+    "HasStyle": false,
+    "HasUnderline": false,
+    "HasStrikethrough": false,
+    "Foreground": { "color": "#FFDB9242" },
+    "Background": null,
+    "HasFamily": false,
+    "HasSize": false
+  },
+  {
+    "Name": "Value",
+    "HasWeight": false,
+    "HasStyle": false,
+    "HasUnderline": false,
+    "HasStrikethrough": false,
+    "Foreground": { "color": "#FFB367DB" },
+    "Background": null,
+    "HasFamily": false,
+    "HasSize": false
+  },
+  {
+    "Name": "Word",
+    "HasWeight": false,
+    "HasStyle": false,
+    "HasUnderline": false,
+    "HasStrikethrough": false,
+    "Foreground": { "color": "#FF607FDB" },
+    "Background": null,
+    "HasFamily": false,
+    "HasSize": false
+  },
+  {
+    "Name": "Comments",
+    "HasWeight": false,
+    "HasStyle": false,
+    "HasUnderline": false,
+    "HasStrikethrough": false,
+    "Foreground": { "color": "#FF70DB77" },
+    "Background": null,
+    "HasFamily": false,
+    "HasSize": false
+  }
+]
