@@ -1,11 +1,13 @@
 ﻿using ICSharpCode.AvalonEdit;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,8 +32,10 @@ namespace Compiler
         public MainWindow()
         {
             InitializeComponent();
-            Create(null, null);//создание базового окна
             muplDefenition = new CustomHighlightingDefenition();
+
+
+            Create(null, null);//создание базового окна
         }
         private void OutputMsg(string text)
         {
@@ -202,6 +206,21 @@ namespace Compiler
             if (changesFlag[i])
                 Save(null, null);
             tabs.Items.Remove(tab);
+        }
+
+        private void task_Click(object sender, RoutedEventArgs e)
+        {
+            output.Text = "";
+            List<Regex> test = new List<Regex>();
+            foreach (var a in output.SyntaxHighlighting.MainRuleSet.Spans) {
+                test.Add(a.StartExpression);
+                test.Add(a.EndExpression);
+            }
+            using (StreamWriter file = File.CreateText("test.json"))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, test);
+            }
         }
     }
 }

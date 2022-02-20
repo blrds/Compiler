@@ -89,7 +89,7 @@
                 <MenuItem.Header>
                     <TextBlock Text="Текст"/>
                 </MenuItem.Header>
-                <MenuItem Name="task">
+                <MenuItem Name="task" Click="task_Click">
                     <MenuItem.Header>
                         <TextBlock Text="Постановка задачи"/>
                     </MenuItem.Header>

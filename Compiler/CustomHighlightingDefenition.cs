@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
@@ -38,52 +39,71 @@ namespace Compiler
                 switch (a.Type) {
                     case ConstructionType.Bracket: {
                             if (a.Construction.Contains('"') || a.Construction.Contains("/*")||a.Construction.Contains("//")) {
+                               
                                 var span = new HighlightingSpan();
-                                span.RuleSet = ruleSet;
+                                span.RuleSet = null;
+                                span.SpanColorIncludesStart = true;
+                                span.SpanColorIncludesEnd = true;
                                 var split = a.Construction.Split('|');
-                                span.StartExpression = new System.Text.RegularExpressions.Regex(split[0]);
-                                if (a.Construction.Contains("//")) {
-                                    span.EndExpression = new System.Text.RegularExpressions.Regex('\n'.ToString());
+                                span.StartExpression = new Regex(split[0]);
+                                if (a.Construction.Contains("//"))
+                                {
+                                    span.EndExpression = new Regex("\n");
                                     span.SpanColor = colors.Where(x => x.Name == "Comments").First();
-                                    break;
+                                    span.StartColor = colors.Where(x => x.Name == "Comments").First();
+                                    span.EndColor = colors.Where(x => x.Name == "Comments").First();
+                                    ruleSet.Spans.Add(span);
                                 }
-                                span.EndExpression = new System.Text.RegularExpressions.Regex(split[1]);
-                                if (a.Construction.Contains('"')) {
-                                    span.SpanColor = colors.Where(x => x.Name == "String").First();
-                                    break;
+                                else
+                                {
+                                    span.EndExpression = new Regex(Regex.Escape(split[1]));
+                                    if (a.Construction.Contains('"'))
+                                    {
+                                        span.SpanColor = colors.Where(x => x.Name == "String").First();
+                                        span.StartColor = colors.Where(x => x.Name == "String").First();
+                                        span.EndColor = colors.Where(x => x.Name == "String").First();
+                                        ruleSet.Spans.Add(span);
+                                        break;
+
+                                    }
+                                    if (a.Construction.Contains("/*"))
+                                    {
+                                        span.SpanColor = colors.Where(x => x.Name == "Comments").First();
+                                        span.StartColor = colors.Where(x => x.Name == "Comments").First();
+                                        span.EndColor = colors.Where(x => x.Name == "Comments").First();
+                                        break;
+
+                                    }
                                 }
-                                if (a.Construction.Contains("/*")) {
-                                    span.SpanColor = colors.Where(x => x.Name == "Comments").First();
-                                    break;
-                                }
+                                
                             }
                             break; 
                         }
                     case ConstructionType.Constructions: {
                             var rule = new HighlightingRule();
                             rule.Color = colors.Where(x => x.Name == "Construction").First();
-                            rule.Regex = new System.Text.RegularExpressions.Regex(a.Construction);
+                            rule.Regex = new Regex(a.Construction);
                             ruleSet.Rules.Add(rule);
                             break;
                         }
                     case ConstructionType.Keyword: {
                             var rule = new HighlightingRule();
                             rule.Color = colors.Where(x => x.Name == "Word").First();
-                            rule.Regex = new System.Text.RegularExpressions.Regex(a.Construction);
+                            rule.Regex = new Regex(a.Construction);
                             ruleSet.Rules.Add(rule);
                             break;
                         }
                     case ConstructionType.Value: {
                             var rule = new HighlightingRule();
                             rule.Color = colors.Where(x => x.Name == "Value").First();
-                            rule.Regex = new System.Text.RegularExpressions.Regex(a.Construction);
+                            rule.Regex = new Regex(a.Construction);
                             ruleSet.Rules.Add(rule);
                             break; 
                         }
                     case ConstructionType.Type: {
                             var rule = new HighlightingRule();
                             rule.Color = colors.Where(x => x.Name == "Word").First();
-                            rule.Regex = new System.Text.RegularExpressions.Regex(a.Construction);
+                            rule.Regex = new Regex(a.Construction);
                             ruleSet.Rules.Add(rule);
                             break;
                         }
