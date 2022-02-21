@@ -73,6 +73,7 @@
     </Compile>
     <Compile Include="Models\CustomHighlightingDefenition.cs" />
     <Compile Include="Models\KeyConstruction.cs" />
+    <Compile Include="ViewModels\Base\ViewModel.cs" />
     <Compile Include="Views\Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -111,7 +112,6 @@
     <Folder Include="Data\" />
     <Folder Include="Infrastructure\" />
     <Folder Include="Services\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\back.png" />
