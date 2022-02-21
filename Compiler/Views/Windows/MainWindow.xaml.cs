@@ -30,9 +30,6 @@ namespace Compiler
         
         public MainWindow()
         {
-            InitializeComponent();
-
-
             /*Create(null, null);//создание базового окна*/
         }
         private void OutputMsg(string text)
@@ -160,8 +157,7 @@ namespace Compiler
         private void copy_Click(object sender, RoutedEventArgs e)
         {
 
-            ((tabs.SelectedItem as TabItem).Content as TextEditor).Height = 100;
-            ((tabs.SelectedItem as TabItem).Content as TextEditor).Width = 100;
+            (tabs.Items[0] as TabItem).IsSelected = true;
         }
 
         private void insert_Click(object sender, RoutedEventArgs e)

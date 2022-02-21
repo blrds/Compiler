@@ -177,8 +177,8 @@
             <Button>
             </Button>
         </ToolBar>
-        <TabControl Grid.Row="2" Name="tabs">
-           
+        <TabControl Grid.Row="2" Name ="tabs" ItemsSource="{Binding TabItems}">
+            
         </TabControl>
         <GridSplitter Grid.Row="3" Height="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Black"/>
         <avalonEdit:TextEditor Grid.Row="4" Margin="5" IsReadOnly="True" Name="output" ShowLineNumbers="True" SyntaxHighlighting="C#">
