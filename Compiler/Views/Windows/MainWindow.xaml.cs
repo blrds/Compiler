@@ -212,16 +212,7 @@ namespace Compiler
         
         private void task_Click(object sender, RoutedEventArgs e)
         {
-            output.Text = "";
-            List<HighlightingRule> test = new List<HighlightingRule>();
-            foreach (var a in output.SyntaxHighlighting.MainRuleSet.Rules) {
-                test.Add(a);
-            }
-            using (StreamWriter file = File.CreateText("test.json"))
-            {
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(file, test);
-            }
+           
         }
     }
 }
