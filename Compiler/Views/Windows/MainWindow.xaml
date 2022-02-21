@@ -3,9 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Compiler" xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        xmlns:local="clr-namespace:Compiler" 
+        xmlns:vm="clr-namespace:Compiler.ViewModels" 
+        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
-        Title="Compiler" Height="450" Width="800" Name="main" Closing="main_Closing">
+        Title="Compiler" Height="450" Width="800" Name="main">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -19,27 +24,27 @@
                 <MenuItem.Header>
                     <TextBlock Text="Файл"/>
                 </MenuItem.Header>
-                <MenuItem Name="create" Click="Create">
+                <MenuItem Command="{Binding CreateCommand}" >
                     <MenuItem.Header>
                         <TextBlock Text="Создать"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="open" Click="Open">
+                <MenuItem Command="{Binding OpenFileCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Откртыть"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="save" Click="Save">
+                <MenuItem Name="save" Click="copy_Click">
                     <MenuItem.Header>
                         <TextBlock Text="Сохранить"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="saveAs" Click="SaveAs">
+                <MenuItem Name="saveAs">
                     <MenuItem.Header>
                         <TextBlock Text="Сохранить как"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="exit" Click="Exit">
+                <MenuItem Name="exit">
                     <MenuItem.Header>
                         <TextBlock Text="Выход"/>
                     </MenuItem.Header>
@@ -49,37 +54,37 @@
                 <MenuItem.Header>
                     <TextBlock Text="Правка"/>
                 </MenuItem.Header>
-                <MenuItem Name="cancel" Click="cancel_Click">
+                <MenuItem Command="Undo">
                     <MenuItem.Header>
                         <TextBlock Text="Отменить"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="repeat" Click="repeat_Click">
+                <MenuItem Command="Redo">
                     <MenuItem.Header>
                         <TextBlock Text="Повторить"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="erase" Click="erase_Click">
+                <MenuItem Command="Cut">
                     <MenuItem.Header>
                         <TextBlock Text="Вырезать"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="copy" Click="copy_Click">
+                <MenuItem Command="Copy">
                     <MenuItem.Header>
                         <TextBlock Text="Копировать"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="insert" Click="insert_Click">
+                <MenuItem Command="Paste">
                     <MenuItem.Header>
                         <TextBlock Text="Вставить"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="delete" Click="delete_Click">
+                <MenuItem Command="Delete">
                     <MenuItem.Header>
                         <TextBlock Text="Удалить"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="selectAll" Click="selectAll_Click">
+                <MenuItem Command="SelectAll">
                     <MenuItem.Header>
                         <TextBlock Text="Выделить все"/>
                     </MenuItem.Header>
@@ -89,7 +94,7 @@
                 <MenuItem.Header>
                     <TextBlock Text="Текст"/>
                 </MenuItem.Header>
-                <MenuItem Name="task" Click="task_Click">
+                <MenuItem Name="task">
                     <MenuItem.Header>
                         <TextBlock Text="Постановка задачи"/>
                     </MenuItem.Header>
@@ -152,30 +157,24 @@
             </MenuItem>
         </Menu>
         <ToolBar Grid.Row="1">
-            <Button Click="Create">
-                <Image Source="Resources/Images/file.png"/>
+            <Button >
+               
             </Button>
-            <Button Click="Open">
-                <Image Source="Resources/Images/folder.png"/>
+            <Button >
+                
             </Button>
             <Button>
-                <Image Source="Resources/Images/save.png"/>
             </Button>
             <Separator/>
             <Button>
-                <Image Source="Resources/Images/back.png"/>
             </Button>
             <Button>
-                <Image Source="Resources/Images/forward.png"/>
             </Button>
             <Button>
-                <Image Source="Resources/Images/copy.png"/>
             </Button>
             <Button>
-                <Image Source="Resources/Images/cut.png"/>
             </Button>
             <Button>
-                <Image Source="Resources/Images/insert.png"/>
             </Button>
         </ToolBar>
         <TabControl Grid.Row="2" Name="tabs">

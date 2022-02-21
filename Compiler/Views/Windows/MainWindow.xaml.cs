@@ -27,54 +27,31 @@ namespace Compiler
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<bool> changesFlag = new List<bool>();//флаги изменений
-        private List<bool> saveFlag = new List<bool>();//флаги предшествующего сохранения
-        private CustomHighlightingDefenition muplDefenition;
+        
         public MainWindow()
         {
             InitializeComponent();
-            muplDefenition = new CustomHighlightingDefenition();
 
 
-            Create(null, null);//создание базового окна
+            /*Create(null, null);//создание базового окна*/
         }
         private void OutputMsg(string text)
         {
             output.Text=text;
         }
         
-        void TabCreat(string name)//добавление новой вкладки
-        {
-            tabs.Items.Add(new TabItem
-            {
-                Header = new StackPanel { Orientation=Orientation.Horizontal},
-                Content = new TextEditor { Margin = new Thickness(5),  AllowDrop=true, ShowLineNumbers=true, SyntaxHighlighting=muplDefenition}
-            });
-            var sp = ((tabs.Items[tabs.Items.Count - 1] as TabItem).Header as StackPanel);
-            sp.Children.Add(new TextBlock { Text = name });
-            var i = sp.Children.Add(new Button { Content = "X" });
-            (sp.Children[i] as Button).Click += closeTab_Click;
-            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextEditor).KeyDown += Input_KeyDown;
-            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextEditor).Drop += main_Drop;
-            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextEditor).PreviewDragOver += main_PreviewDragOver;
-        }
+        
 
-        private void Create(object sender, RoutedEventArgs e)
-        {
-            TabCreat("Безымянный.mupl");
-            changesFlag.Add(false);
-            saveFlag.Add(false);
-            ((tabs.Items[0] as TabItem).Content as TextEditor).Text = "//ff\nf\n/*ff*/ff\n\"ff\"f";
-        }
+        
 
-        private void OpenFile(string file) {
+       /* private void OpenFile(string file) {
             TabCreat(file);
             ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextEditor).Text = File.ReadAllText(file);
             OutputMsg("Успешно");
             saveFlag.Add(true);
             changesFlag.Add(false);
-        }
-        private void Open(object sender, RoutedEventArgs e)
+        }*/
+        /*private void Open(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
             if (ofd.ShowDialog() == true)
@@ -87,9 +64,9 @@ namespace Compiler
                 catch (FileLoadException exc) { OutputMsg("Файл не может быть заргужен"); }
                 catch (FileNotFoundException exc) { OutputMsg("Файл не найден"); }
             }
-        }
+        }*/
 
-        private void Save(object sender, RoutedEventArgs e)
+        /*private void Save(object sender, RoutedEventArgs e)
         {
             if (!saveFlag[tabs.SelectedIndex]) { SaveAs(sender, e); return; }
             else {
@@ -108,7 +85,7 @@ namespace Compiler
                 catch (NotSupportedException exp) { OutputMsg("Неверный формат файла"); }
                 catch (SecurityException exp) { OutputMsg("Неверный формат файла"); }
             }
-        }
+        }*/
 
         private void SaveAs(object sender, RoutedEventArgs e)
         {
@@ -126,12 +103,12 @@ namespace Compiler
             }
         }
 
-        private void Input_KeyDown(object sender, KeyEventArgs e)
+        /*private void Input_KeyDown(object sender, KeyEventArgs e)
         {
             changesFlag[tabs.SelectedIndex] = true;
-        }
+        }*/
 
-        private void main_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        /*private void main_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             for (int i = 0; i < tabs.Items.Count; ++i) {
                 if (changesFlag[i])
@@ -140,14 +117,14 @@ namespace Compiler
                     Save(null, null);
                 }
             }
-        }
+        }*/
 
         private void Exit(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private void main_Drop(object sender, DragEventArgs e)
+        /*private void main_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -159,7 +136,7 @@ namespace Compiler
                         OpenFile(file);
                 }
             }
-        }
+        }*/
         private void main_PreviewDragOver(object sender, DragEventArgs e)
         {
             e.Handled = true;
@@ -182,7 +159,9 @@ namespace Compiler
 
         private void copy_Click(object sender, RoutedEventArgs e)
         {
-            ((tabs.SelectedItem as TabItem).Content as TextEditor).Copy();
+
+            ((tabs.SelectedItem as TabItem).Content as TextEditor).Height = 100;
+            ((tabs.SelectedItem as TabItem).Content as TextEditor).Width = 100;
         }
 
         private void insert_Click(object sender, RoutedEventArgs e)
@@ -200,7 +179,7 @@ namespace Compiler
             ((tabs.SelectedItem as TabItem).Content as TextEditor).SelectAll();
         }
 
-        private void closeTab_Click(object sender, RoutedEventArgs e)
+        /*private void closeTab_Click(object sender, RoutedEventArgs e)
         {
             var tab = ((sender as Button).Parent as StackPanel).Parent as TabItem;
             tab.IsSelected = true;
@@ -208,7 +187,7 @@ namespace Compiler
             if (changesFlag[i])
                 Save(null, null);
             tabs.Items.Remove(tab);
-        }
+        }*/
         
         private void task_Click(object sender, RoutedEventArgs e)
         {
