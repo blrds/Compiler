@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Compiler" 
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:vm="clr-namespace:Compiler.ViewModels" 
         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
@@ -157,31 +158,53 @@
             </MenuItem>
         </Menu>
         <ToolBar Grid.Row="1">
-            <Button >
-               
+            <Button Command="{Binding CreateCommand}">
+                <Button.Content>
+                    <fa:ImageAwesome Icon="Regular_File"/>
+                </Button.Content>
             </Button>
-            <Button >
-                
+            <Button Command="{Binding OpenFileCommand}">
+                <Button.Content>
+                    <fa:ImageAwesome Icon="Regular_FolderOpen"/>
+                </Button.Content>
             </Button>
             <Button>
+                <Button.Content>
+                    <fa:ImageAwesome Icon="Regular_Save"/>
+                </Button.Content>
             </Button>
             <Separator/>
-            <Button>
+            <Button Command="Undo">
+                <Button.Content>
+                    <fa:ImageAwesome Icon="Solid_CaretLeft"/>
+                </Button.Content>
             </Button>
-            <Button>
+            <Button Command="Redo">
+                <Button.Content>    
+                    <fa:ImageAwesome Icon="Solid_CaretRight"/>
+                </Button.Content>
             </Button>
-            <Button>
+            <Button Command="Cut">
+                <Button.Content>
+                    <fa:ImageAwesome Icon="Solid_Cut"/>
+                </Button.Content>
             </Button>
-            <Button>
+            <Button Command="Copy">
+                <Button.Content>
+                    <fa:ImageAwesome Icon="Solid_Copy"/>
+                </Button.Content>
             </Button>
-            <Button>
+            <Button Command="Paste">
+                <Button.Content>
+                    <fa:ImageAwesome Icon="Solid_Paste"/>
+                </Button.Content>
             </Button>
         </ToolBar>
         <TabControl Grid.Row="2" Name ="tabs" ItemsSource="{Binding TabItems}">
             
         </TabControl>
         <GridSplitter Grid.Row="3" Height="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Black"/>
-        <avalonEdit:TextEditor Grid.Row="4" Margin="5" IsReadOnly="True" Name="output" ShowLineNumbers="True" SyntaxHighlighting="C#">
+        <avalonEdit:TextEditor Grid.Row="4" Margin="5" IsReadOnly="True" Name="output" ShowLineNumbers="True" SyntaxHighlighting="C#" Document="{Binding OutputText}">
 
         </avalonEdit:TextEditor>
     </Grid>

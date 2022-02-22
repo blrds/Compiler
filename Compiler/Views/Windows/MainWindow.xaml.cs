@@ -32,36 +32,16 @@ namespace Compiler
         {
             /*Create(null, null);//создание базового окна*/
         }
-        private void OutputMsg(string text)
+
+
+
+
+
+
+        private void Open(object sender, RoutedEventArgs e)
         {
-            output.Text=text;
+            
         }
-        
-        
-
-        
-
-       /* private void OpenFile(string file) {
-            TabCreat(file);
-            ((tabs.Items[tabs.Items.Count - 1] as TabItem).Content as TextEditor).Text = File.ReadAllText(file);
-            OutputMsg("Успешно");
-            saveFlag.Add(true);
-            changesFlag.Add(false);
-        }*/
-        /*private void Open(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            if (ofd.ShowDialog() == true)
-            {
-                try
-                {
-                    OpenFile(ofd.FileName);
-                }
-                catch (FileFormatException exc) { OutputMsg( "Неверный формат файла"); }
-                catch (FileLoadException exc) { OutputMsg("Файл не может быть заргужен"); }
-                catch (FileNotFoundException exc) { OutputMsg("Файл не найден"); }
-            }
-        }*/
 
         /*private void Save(object sender, RoutedEventArgs e)
         {
@@ -121,23 +101,7 @@ namespace Compiler
             this.Close();
         }
 
-        /*private void main_Drop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                foreach (var file in files) {
-                    FileInfo fi = new FileInfo(file);
-                    if ((fi.Extension == ".txt") || (fi.Extension == ".mupl"))
-                        OpenFile(file);
-                }
-            }
-        }*/
-        private void main_PreviewDragOver(object sender, DragEventArgs e)
-        {
-            e.Handled = true;
-        }
+        
 
         private void cancel_Click(object sender, RoutedEventArgs e)
         {
