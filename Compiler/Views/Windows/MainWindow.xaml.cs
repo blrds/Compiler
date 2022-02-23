@@ -38,63 +38,17 @@ namespace Compiler
 
 
 
-        private void Open(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        /*private void Save(object sender, RoutedEventArgs e)
-        {
-            if (!saveFlag[tabs.SelectedIndex]) { SaveAs(sender, e); return; }
-            else {
-                try
-                {
-                    TabItem tabItem = tabs.SelectedItem as TabItem;
-                    TextEditor tb = tabItem.Content as TextEditor;
-                    
-                    File.WriteAllText((tabItem.Header as TextBlock).Text, tb.Text);
-                }
-                catch (ArgumentException exp) { OutputMsg("Данный путь недопустим или содержит недопустимые символы"); }
-                catch (PathTooLongException exp) { OutputMsg("Путь или имя файла превышают допустимую длину"); }
-                catch (DirectoryNotFoundException exp) { OutputMsg("Указан недопустимый путь (например, он ведет на несопоставленный диск)"); }
-                catch (IOException exp) { OutputMsg("При открытии файла произошла ошибка ввода-вывода"); }
-                catch (UnauthorizedAccessException exp) { OutputMsg(""); }
-                catch (NotSupportedException exp) { OutputMsg("Неверный формат файла"); }
-                catch (SecurityException exp) { OutputMsg("Неверный формат файла"); }
-            }
-        }*/
+        
 
         private void SaveAs(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.AddExtension = true;
-            sfd.Filter = "mupl files (*.mupl)|*.mupl|txt files (*.txt)|*.txt";
-            sfd.RestoreDirectory = true;
-            if (sfd.ShowDialog() == true)
-            {
-                TabItem tab = tabs.SelectedItem as TabItem;
-                TextEditor tb = tab.Content as TextEditor;
-                File.WriteAllText(sfd.FileName, tb.Text);
-                OutputMsg("Успешно");
-                (tab.Header as TextBlock).Text = sfd.FileName;
-            }
+            
+            
         }
 
-        /*private void Input_KeyDown(object sender, KeyEventArgs e)
-        {
-            changesFlag[tabs.SelectedIndex] = true;
-        }*/
 
-        /*private void main_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            for (int i = 0; i < tabs.Items.Count; ++i) {
-                if (changesFlag[i])
-                {
-                    tabs.SelectedIndex = i;
-                    Save(null, null);
-                }
-            }
-        }*/
+
+        
 
         private void Exit(object sender, RoutedEventArgs e)
         {

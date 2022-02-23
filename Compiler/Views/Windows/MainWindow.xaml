@@ -8,7 +8,7 @@
         xmlns:vm="clr-namespace:Compiler.ViewModels" 
         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
-        Title="Compiler" Height="450" Width="800" Name="main">
+        Title="Compiler" Height="450" Width="800" Name="main" Closing="{Binding main_Closing}">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>

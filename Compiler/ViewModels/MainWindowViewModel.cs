@@ -2,10 +2,14 @@
 using Compiler.ViewModels.Base;
 using FontAwesome5;
 using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.Document;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -24,10 +28,32 @@ namespace Compiler.ViewModels
 
         /// <summary>Collection of the tabs</summary>
         public ObservableCollection<TabItem> TabItems { get; set; }
+        #region propsForTabs
+        private TabItem SelectedItem=>TabItems.Where(x => x.IsSelected).First();
+        private int SelectedIndex { 
+            get{
+                for (int i = 0; i < TabItems.Count; i++)
+                {
+                    if (TabItems[i].IsSelected) return i;
+                }
+                return -1;
+            }
+            set => TabItems[value].IsSelected = true;
+        }
 
+        private TextEditor TextEditor(TabItem tab) {
+            return tab.Content as TextEditor; 
+        }
+
+        private TextEditor TextEditor(int index) {
+            return TextEditor(TabItems[index]);
+        }
+            
+        
+        #endregion
         /// <summary>OutPut  Text</summary>
-        public string OutputText { get; private set; } = "Here is your output";
-
+        public TextDocument OutputText { get; private set; }
+    
         #endregion
         #endregion
 
@@ -52,7 +78,7 @@ namespace Compiler.ViewModels
             var i = sp.Children.Add(new Button { Content = new ImageAwesome {Icon=EFontAwesomeIcon.Regular_ClosedCaptioning } });;
             TabItems.Last().IsSelected = true;
 
-            (sp.Children[i] as Button).Click += closeTab_Click;
+           // (sp.Children[i] as Button).Click += closeTab_Click;
             (TabItems.Last().Content as TextEditor).KeyDown += Input_KeyDown;
             (TabItems.Last().Content as TextEditor).Drop += main_Drop;
             (TabItems.Last().Content as TextEditor).PreviewDragOver += main_PreviewDragOver;
@@ -78,6 +104,11 @@ namespace Compiler.ViewModels
         {
             e.Handled = true;
         }
+
+        private void Input_KeyDown(object sender, KeyEventArgs e)
+        {
+            changesFlag[SelectedIndex] = true;
+        }
         #endregion
         #endregion
 
@@ -85,7 +116,7 @@ namespace Compiler.ViewModels
         {
             TabCreat(file);
             (TabItems.Last().Content as TextEditor).Text = File.ReadAllText(file);
-            OutputText = "Успешно";
+            OutputText.Text = "Упешно";
             saveFlag.Add(true);
             changesFlag.Add(false);
         }
@@ -103,9 +134,9 @@ namespace Compiler.ViewModels
                 {
                     OpenFile(ofd.FileName);
                 }
-                catch (FileFormatException exc) { OutputText="Неверный формат файла"; }
-                catch (FileLoadException exc) { OutputText = "Файл не может быть заргужен"; }
-                catch (FileNotFoundException exc) { OutputText = "Файл не найден"; }
+                catch (FileFormatException exc) { OutputText.Text = "Неверный формат файла"; }
+                catch (FileLoadException exc) { OutputText.Text = "Файл не может быть заргужен"; }
+                catch (FileNotFoundException exc) { OutputText.Text = "Файл не найден"; }
             }
         }
         #endregion
@@ -120,11 +151,72 @@ namespace Compiler.ViewModels
             saveFlag.Add(false);
         }
         #endregion
+
+        #region SaveCommand
+        public ICommand SaveCommand { get; }
+        private bool CanSaveCommnadExecute(object p) => (TabItems.Count > 0 ? true : false) && (SelectedIndex != -1);
+        private void OnSaveCommandExecuted(object p)
+        {
+            if (!saveFlag[SelectedIndex]) { OnSaveAsCommandExecuted(p); return; }
+            else
+            {
+                try
+                {
+                    TextEditor tb = TextEditor(SelectedItem);
+
+                    File.WriteAllText((SelectedItem.Header as TextBlock).Text, tb.Text);
+                }
+                catch (ArgumentException exp) { OutputText.Text="Данный путь недопустим или содержит недопустимые символы"; }
+                catch (PathTooLongException exp) { OutputText.Text = "Путь или имя файла превышают допустимую длину"; }
+                catch (DirectoryNotFoundException exp) { OutputText.Text = "Указан недопустимый путь (например, он ведет на несопоставленный диск)"; }
+                catch (IOException exp) { OutputText.Text = "При открытии файла произошла ошибка ввода-вывода"; }
+                catch (UnauthorizedAccessException exp) { OutputText.Text = ""; }
+                catch (NotSupportedException exp) { OutputText.Text = "Неверный формат файла"; }
+                catch (SecurityException exp) { OutputText.Text = "Неверный формат файла"; }
+            }
+        }
+
+        #endregion
+
+        #region SaveAsCommand
+        public ICommand SaveAsCommand { get; }
+        private bool CanSaveAsCommnadExecute(object p) => (TabItems.Count > 0 ? true : false)&&(SelectedIndex!=-1);
+        private void OnSaveAsCommandExecuted(object p)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.AddExtension = true;
+            sfd.Filter = "mupl files (*.mupl)|*.mupl|txt files (*.txt)|*.txt";
+            sfd.RestoreDirectory = true;
+            if (sfd.ShowDialog() == true)
+            {
+                TextEditor tb = TextEditor(SelectedItem);
+                File.WriteAllText(sfd.FileName, tb.Text);
+                OutputText.Text="Успешно";
+                (SelectedItem.Header as TextBlock).Text = sfd.FileName;
+            }
+        }
+        #endregion
+        #endregion
+
+        #region Events
+        public void main_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            for (int i = 0; i < TabItems.Count; ++i)
+            {
+                if (changesFlag[i])
+                {
+                    SelectedIndex = i;
+                    OnSaveCommandExecuted(sender);
+                }
+            }
+        }
         #endregion
         public MainWindowViewModel() {
             #region Commands
             OpenFileCommand = new LambdaCommand(OnOpenFileCommandExecuted, CanOpenFileCommnadExecute);
             CreateCommand = new LambdaCommand(OnCreateCommandExecuted, CanCreateCommnadExecute);
+            SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommnadExecute);
+            SaveAsCommand = new LambdaCommand(OnSaveAsCommandExecuted, CanSaveAsCommnadExecute);
             #endregion
             TabItems = new ObservableCollection<TabItem>();
         }
