@@ -18,6 +18,9 @@ namespace Compiler.ViewModels
 {
     internal class MainWindowViewModel:ViewModel
     {
+        const string about = "about.txt";
+        const string reference = "reference.txt";
+
         #region variables
         CustomHighlightingDefenition muplDefenition = new CustomHighlightingDefenition();
         private readonly List<bool> changesFlag = new List<bool>();//флаги изменений
@@ -48,11 +51,11 @@ namespace Compiler.ViewModels
         private TextEditor TextEditor(int index) {
             return TextEditor(TabItems[index]);
         }
-            
-        
+
+
         #endregion
         /// <summary>OutPut  Text</summary>
-        public TextDocument OutputText { get; private set; }
+        public TextDocument OutputText { get; private set; } = new TextDocument();
     
         #endregion
         #endregion
@@ -75,10 +78,16 @@ namespace Compiler.ViewModels
             });
             var sp = (TabItems.Last().Header as StackPanel);
             sp.Children.Add(new TextBlock { Text = name });
-            var i = sp.Children.Add(new Button { Content = new ImageAwesome {Icon=EFontAwesomeIcon.Regular_ClosedCaptioning } });;
+            var i = sp.Children.Add(new Button { 
+                Content = new ImageAwesome {
+                    Icon=EFontAwesomeIcon.Regular_WindowClose, 
+                    Height=15,
+                },
+                BorderThickness=new Thickness(0)
+            });
             TabItems.Last().IsSelected = true;
 
-           // (sp.Children[i] as Button).Click += closeTab_Click;
+            (sp.Children[i] as Button).Click += closeTab_Click;
             (TabItems.Last().Content as TextEditor).KeyDown += Input_KeyDown;
             (TabItems.Last().Content as TextEditor).Drop += main_Drop;
             (TabItems.Last().Content as TextEditor).PreviewDragOver += main_PreviewDragOver;
@@ -108,6 +117,15 @@ namespace Compiler.ViewModels
         private void Input_KeyDown(object sender, KeyEventArgs e)
         {
             changesFlag[SelectedIndex] = true;
+        }
+
+        private void closeTab_Click(object sender, RoutedEventArgs e)
+        {
+            var tab = ((sender as Button).Parent as StackPanel).Parent as TabItem;
+            tab.IsSelected = true;
+            if (changesFlag[SelectedIndex])
+                OnSaveAsCommandExecuted(sender);
+            TabItems.Remove(tab);
         }
         #endregion
         #endregion
@@ -196,6 +214,35 @@ namespace Compiler.ViewModels
             }
         }
         #endregion
+
+        #region ExitCommand
+        public ICommand ExitCommand { get; }
+        private bool CanExitCommnadExecute(object p) => true;
+        private void OnExitCommandExecuted(object p)
+        {
+            Application.Current.MainWindow.Close();
+        }
+        #endregion
+
+        #region ReferenceCommand
+        public ICommand ReferenceCommand { get; }
+        private bool CanReferenceCommnadExecute(object p) => true;
+        private void OnReferenceCommandExecuted(object p)
+        {
+            System.Windows.Forms.MessageBox.Show(File.ReadAllText(reference), "Справка",
+                System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+        }
+        #endregion
+
+        #region AboutCommand
+        public ICommand AboutCommand { get; }
+        private bool CanAboutCommnadExecute(object p) => true;
+        private void OnAboutCommandExecuted(object p)
+        {
+            System.Windows.Forms.MessageBox.Show(File.ReadAllText(about), "О программе",
+                System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+        }
+        #endregion
         #endregion
 
         #region Events
@@ -217,8 +264,15 @@ namespace Compiler.ViewModels
             CreateCommand = new LambdaCommand(OnCreateCommandExecuted, CanCreateCommnadExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommnadExecute);
             SaveAsCommand = new LambdaCommand(OnSaveAsCommandExecuted, CanSaveAsCommnadExecute);
+            ExitCommand = new LambdaCommand(OnExitCommandExecuted, CanExitCommnadExecute);
+            ReferenceCommand = new LambdaCommand(OnReferenceCommandExecuted, CanReferenceCommnadExecute);
+            AboutCommand = new LambdaCommand(OnAboutCommandExecuted, CanAboutCommnadExecute);
             #endregion
             TabItems = new ObservableCollection<TabItem>();
+
+            Application.Current.MainWindow.Closing += main_Closing;
+
+            OnCreateCommandExecuted(this);
         }
          
     }

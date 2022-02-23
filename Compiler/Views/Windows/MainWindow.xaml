@@ -8,7 +8,7 @@
         xmlns:vm="clr-namespace:Compiler.ViewModels" 
         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
-        Title="Compiler" Height="450" Width="800" Name="main" Closing="{Binding main_Closing}">
+        Title="Compiler" Height="450" Width="800" Name="main" MinHeight="100" MinWidth="100">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
@@ -35,17 +35,17 @@
                         <TextBlock Text="Откртыть"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="save" Click="copy_Click">
+                <MenuItem Name="save" Command="{Binding SaveCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Сохранить"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="saveAs">
+                <MenuItem Name="saveAs" Command="{Binding SaveAsCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Сохранить как"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="exit">
+                <MenuItem Name="exit" Command="{Binding ExitCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Выход"/>
                     </MenuItem.Header>
@@ -145,12 +145,12 @@
                 <MenuItem.Header>
                     <TextBlock Text="Справка"/>
                 </MenuItem.Header>
-                <MenuItem Name="referenceCall">
+                <MenuItem Name="referenceCall" Command="{Binding ReferenceCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Вызов справки"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="about" >
+                <MenuItem Name="about" Command="{Binding AboutCommand}" >
                     <MenuItem.Header>
                         <TextBlock Text="О программе"/>
                     </MenuItem.Header>
@@ -168,7 +168,7 @@
                     <fa:ImageAwesome Icon="Regular_FolderOpen"/>
                 </Button.Content>
             </Button>
-            <Button>
+            <Button Command="{Binding SaveCommand}">
                 <Button.Content>
                     <fa:ImageAwesome Icon="Regular_Save"/>
                 </Button.Content>

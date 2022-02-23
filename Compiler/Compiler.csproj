@@ -111,8 +111,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resources\ColorsBinding.json" />
-    <None Include="Resources\KeyConstructions.json" />
+    <Resource Include="Resources\ColorsBinding.json" />
+    <Resource Include="Resources\KeyConstructions.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -120,6 +120,10 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\about.txt" />
+    <Resource Include="Resources\reference.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
