@@ -5,7 +5,8 @@
         Brackets,
         Constructions,
         Value,
-        Type
+        Type,
+        Operator
     }
     class KeyConstruction
     {

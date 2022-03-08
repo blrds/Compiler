@@ -1,9 +1,11 @@
 ﻿using Compiler.Infrastructure.Commands;
+using Compiler.Models;
 using Compiler.ViewModels.Base;
 using Compiler.Views.Windows;
 using FontAwesome5;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Highlighting;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -21,9 +23,10 @@ namespace Compiler.ViewModels
     {
         const string about = "about.txt";
         const string reference = "reference.txt";
+        private readonly HighlightingRuleSet ruleSet;
 
         #region variables
-        CustomHighlightingDefenition muplDefenition = new CustomHighlightingDefenition();
+        CustomHighlightingDefenition muplDefenition;
         private readonly List<bool> changesFlag = new List<bool>();//флаги изменений
         private readonly List<bool> saveFlag = new List<bool>();//флаги предшествующего сохранения
 
@@ -247,6 +250,15 @@ namespace Compiler.ViewModels
                 System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
         }
         #endregion
+
+        #region StringDecompilationCommand
+        public ICommand StringDecompilationCommand { get; }
+        private bool CanStringDecompilationCommnadExecute(object p) => true;
+        private void OnStringDecompilationCommandExecuted(object p)
+        {
+            
+        }
+        #endregion
         #endregion
 
         #region Events
@@ -271,9 +283,11 @@ namespace Compiler.ViewModels
             ExitCommand = new LambdaCommand(OnExitCommandExecuted, CanExitCommnadExecute);
             ReferenceCommand = new LambdaCommand(OnReferenceCommandExecuted, CanReferenceCommnadExecute);
             AboutCommand = new LambdaCommand(OnAboutCommandExecuted, CanAboutCommnadExecute);
+            StringDecompilationCommand = new LambdaCommand(OnStringDecompilationCommandExecuted, CanStringDecompilationCommnadExecute);
             #endregion
             TabItems = new ObservableCollection<TabItem>();
-
+            ruleSet = RuleSetCreator.ExtractRuleSet();
+            muplDefenition = new CustomHighlightingDefenition(ruleSet);
             Application.Current.MainWindow.Closing += main_Closing;
 
             OnCreateCommandExecuted(this);

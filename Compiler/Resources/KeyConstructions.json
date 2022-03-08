@@ -143,5 +143,30 @@
     "Code": 22,
     "Construction": "switch|case|default",
     "Type": 2
+  },
+  {
+    "Code": 23,
+    "Construction": "var",
+    "Type": 4
+  },
+  {
+    "Code": 24,
+    "Construction": "let",
+    "Type": 4
+  },
+  {
+    "Code": 25,
+    "Construction": "=",
+    "Type": 5
+  },
+  {
+    "Code": 26,
+    "Construction": ";",
+    "Type": 5
+  },
+  {
+    "Code": 27,
+    "Construction": "//n",
+    "Type": 5
   }
 ]

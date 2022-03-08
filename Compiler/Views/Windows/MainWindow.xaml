@@ -136,7 +136,7 @@
                     </MenuItem.Header>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Margin="5">
+            <MenuItem Margin="5" Command="{Binding StringDecompilationCommand}">
                 <MenuItem.Header>
                     <TextBlock Text="Пуск"/>
                 </MenuItem.Header>

@@ -69,6 +69,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Infrastructure\StructureDefinitions\Base\MainInformation.cs" />
+    <Compile Include="Infrastructure\StructureDefinitions\StructureDefinition.cs" />
+    <Compile Include="Models\RuleSetCreator.cs" />
     <Compile Include="Views\Windows\TextMessage.xaml.cs">
       <DependentUpon>TextMessage.xaml</DependentUpon>
     </Compile>
@@ -118,8 +121,12 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Resource Include="Resources\ColorsBinding.json" />
-    <Resource Include="Resources\KeyConstructions.json" />
+    <Resource Include="Resources\ColorsBinding.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\KeyConstructions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -129,8 +136,12 @@
     <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\about.txt" />
-    <Resource Include="Resources\reference.txt" />
+    <Resource Include="Resources\about.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\reference.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
