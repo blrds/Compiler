@@ -1,5 +1,6 @@
 ﻿using Compiler.Infrastructure.Commands;
 using Compiler.ViewModels.Base;
+using Compiler.Views.Windows;
 using FontAwesome5;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Document;
@@ -124,7 +125,7 @@ namespace Compiler.ViewModels
             var tab = ((sender as Button).Parent as StackPanel).Parent as TabItem;
             tab.IsSelected = true;
             if (changesFlag[SelectedIndex])
-                OnSaveAsCommandExecuted(sender);
+                OnSaveCommandExecuted(sender);
             TabItems.Remove(tab);
         }
         #endregion
@@ -146,6 +147,9 @@ namespace Compiler.ViewModels
         private bool CanOpenFileCommnadExecute(object p) => true;
         private void OnOpenFileCommandExecuted(object p) {
             System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
+            ofd.Filter = "mupl files (*.mupl)|*.mupl|txt files (*.txt)|*.txt";
+            ofd.AddExtension = true;
+            ofd.RestoreDirectory = true;
             if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 try
@@ -164,7 +168,7 @@ namespace Compiler.ViewModels
         private bool CanCreateCommnadExecute(object p) => true;
         private void OnCreateCommandExecuted(object p)
         {
-            TabCreat("NoName.mupl");
+            TabCreat("noname.mupl");
             changesFlag.Add(false);
             saveFlag.Add(false);
         }
@@ -182,7 +186,7 @@ namespace Compiler.ViewModels
                 {
                     TextEditor tb = TextEditor(SelectedItem);
 
-                    File.WriteAllText((SelectedItem.Header as TextBlock).Text, tb.Text);
+                    File.WriteAllText(((SelectedItem.Header as StackPanel).Children[0] as TextBlock).Text, tb.Text);
                 }
                 catch (ArgumentException exp) { OutputText.Text="Данный путь недопустим или содержит недопустимые символы"; }
                 catch (PathTooLongException exp) { OutputText.Text = "Путь или имя файла превышают допустимую длину"; }
@@ -229,8 +233,8 @@ namespace Compiler.ViewModels
         private bool CanReferenceCommnadExecute(object p) => true;
         private void OnReferenceCommandExecuted(object p)
         {
-            System.Windows.Forms.MessageBox.Show(File.ReadAllText(reference), "Справка",
-                System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+            TextMessage message = new TextMessage("reference.txt");
+            message.Show();
         }
         #endregion
 

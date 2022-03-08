@@ -8,7 +8,7 @@
         xmlns:vm="clr-namespace:Compiler.ViewModels" 
         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
-        Title="Compiler" Height="450" Width="800" Name="main" MinHeight="100" MinWidth="100">
+        Title="Compiler" Height="450" Width="800" Name="main" MinHeight="300" MinWidth="300">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
@@ -168,7 +168,7 @@
                     <fa:ImageAwesome Icon="Regular_FolderOpen"/>
                 </Button.Content>
             </Button>
-            <Button Command="{Binding SaveCommand}">
+            <Button Command="{Binding SaveCommand}" VerticalAlignment="Bottom">
                 <Button.Content>
                     <fa:ImageAwesome Icon="Regular_Save"/>
                 </Button.Content>
