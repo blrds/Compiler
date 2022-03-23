@@ -166,7 +166,22 @@
   },
   {
     "Code": 27,
-    "Construction": "//n",
+    "Construction": "\\n",
+    "Type": 5
+  },
+  {
+    "Code": 28,
+    "Construction": " ",
+    "Type": 5
+  },
+  {
+    "Code": 29,
+    "Construction": "\\t",
+    "Type": 5
+  },
+  {
+    "Code": 30,
+    "Construction": "\\r",
     "Type": 5
   }
 ]

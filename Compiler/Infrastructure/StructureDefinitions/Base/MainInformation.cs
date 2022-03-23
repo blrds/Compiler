@@ -8,7 +8,7 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
 {
     class MainInformation
     {
-        public MainInformation(string construction, int code, int from, int to)
+        public MainInformation(string construction, string code, int from, int to)
         {
             Construction = construction;
             Code = code;
@@ -17,9 +17,14 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
         }
 
         public string Construction { get; private set; }
-        public int Code { get; private set; }
+        public string Code { get; private set; }
 
         public int From { get; private set;  }
         public int To { get; private set;  }
+
+        public override string ToString()
+        {
+            return Construction+":"+Code+":"+From+":"+To+"\n";
+        }
     }
 }

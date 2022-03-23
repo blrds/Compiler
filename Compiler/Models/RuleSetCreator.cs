@@ -10,7 +10,18 @@ namespace Compiler.Models
 {
     class RuleSetCreator
     {
-        public static HighlightingRuleSet ExtractRuleSet() {
+        private static ICollection<KeyConstruction> ExtractKeys()
+        {
+            List<KeyConstruction> keys;
+            using (StreamReader file = File.OpenText("KeyConstructions.json"))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                keys = (List<KeyConstruction>)serializer.Deserialize(file, typeof(List<KeyConstruction>));
+            }
+            return keys;
+        }
+        public static HighlightingRuleSet ExtractRuleSet()
+        {
             var ruleSet = new HighlightingRuleSet();
 
             #region Colors
@@ -20,19 +31,15 @@ namespace Compiler.Models
             {
                 JsonSerializer serializer = new JsonSerializer();
                 colors = (List<HighlightingColor>)serializer.Deserialize(file, typeof(List<HighlightingColor>));
-            } 
+            }
             #endregion
 
-            List<KeyConstruction> keys;
-            using (StreamReader file = File.OpenText("KeyConstructions.json"))
-            {
-                JsonSerializer serializer = new JsonSerializer();
-                keys = (List<KeyConstruction>)serializer.Deserialize(file, typeof(List<KeyConstruction>));
-            }
+            var keys = ExtractKeys();
             ruleSet.Name = "BaseRuleSet";
 
             foreach (var a in keys)
             {
+                #region BracketsToSpanRule
                 if (a.Type == ConstructionType.Brackets)
                 {
                     if (a.Construction.Contains('"') || a.Construction.Contains("*") || a.Construction.Contains("//"))
@@ -66,9 +73,11 @@ namespace Compiler.Models
 
                     }
                 }
+                #endregion
                 else
                 {
                     var rule = new HighlightingRule();
+                    bool add = true;
                     if (a.Type == ConstructionType.Constructions)
                     {
                         rule.Color = colors.Where(x => x.Name == "Construction").First();
@@ -94,24 +103,41 @@ namespace Compiler.Models
                                     rule.Color = colors.Where(x => x.Name == "Word").First();
                                     break;
                                 }
-                            default: {
-                                    rule.Color = new HighlightingColor { Foreground = new SimpleHighlightingBrush(Color.FromRgb(0, 0, 0))};
+                            default:
+                                {
+                                    add = false;
                                     break;
                                 }
                         }
                         rule.Regex = new Regex("\\b" + a.Construction + "\\b");
                     }
-
-                    ruleSet.Rules.Add(rule);
+                    if (add)
+                        ruleSet.Rules.Add(rule);
                 }
             }
 
             return ruleSet;
         }
 
-        public static List<KeyConstruction> ExtractRuleList() {
-            var answer = new List<KeyConstruction>();
-
+        public static KeySet ExtractKeySet()
+        {
+            var answer = new KeySet();
+            var keys = ExtractKeys();
+            foreach (var a in keys)
+            {
+                if (a.Type == ConstructionType.Operator || a.Type == ConstructionType.Brackets)
+                {
+                    var b = a.Construction.Split('|');
+                    foreach (var c in b)
+                    answer.ValidChars.Add(new KeyConstruction(c,a.Type,a.Code));
+                }
+                else
+                {
+                    var b = a.Construction.Split('|');
+                    foreach (var c in b)
+                        answer.KeyWords.Add(new KeyConstruction(c, a.Type, a.Code));
+                }
+            }
             return answer;
         }
     }

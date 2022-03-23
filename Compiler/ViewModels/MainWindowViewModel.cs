@@ -1,4 +1,5 @@
 ﻿using Compiler.Infrastructure.Commands;
+using Compiler.Infrastructure.StructureDefinitions.Base;
 using Compiler.Models;
 using Compiler.ViewModels.Base;
 using Compiler.Views.Windows;
@@ -29,6 +30,7 @@ namespace Compiler.ViewModels
         CustomHighlightingDefenition muplDefenition;
         private readonly List<bool> changesFlag = new List<bool>();//флаги изменений
         private readonly List<bool> saveFlag = new List<bool>();//флаги предшествующего сохранения
+        private StructureDefinition StructureDefinition = null;
 
 
         #region bindingVars
@@ -253,10 +255,24 @@ namespace Compiler.ViewModels
 
         #region StringDecompilationCommand
         public ICommand StringDecompilationCommand { get; }
-        private bool CanStringDecompilationCommnadExecute(object p) => true;
+        private bool CanStringDecompilationCommnadExecute(object p) {
+            var a = TextEditor(SelectedItem);
+            return (a.Text != "" || a.SelectedText != "");
+                
+        }
         private void OnStringDecompilationCommandExecuted(object p)
         {
-            
+            string fullText = "";
+            if (TextEditor(SelectedItem).SelectedText != "")
+                fullText = TextEditor(SelectedItem).SelectedText;
+            else fullText = TextEditor(SelectedItem).Text;
+            if (StructureDefinition == null) StructureDefinition = new StructureDefinition();
+            var answer = StructureDefinition.Decomposite(fullText);
+            OutputText.Text = "";
+            foreach (var a in answer)
+            {
+                OutputText.Text += a.ToString();
+            }
         }
         #endregion
         #endregion

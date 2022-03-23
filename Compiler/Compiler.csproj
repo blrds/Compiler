@@ -14,6 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -69,6 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Infrastructure\StructureDefinitions\Base\KeySet.cs" />
     <Compile Include="Infrastructure\StructureDefinitions\Base\MainInformation.cs" />
     <Compile Include="Infrastructure\StructureDefinitions\StructureDefinition.cs" />
     <Compile Include="Models\RuleSetCreator.cs" />
@@ -94,8 +96,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\Windows\TextMessage.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

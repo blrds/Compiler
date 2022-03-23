@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace ConTest
 {
@@ -6,6 +7,8 @@ namespace ConTest
     {
         static void Main(string[] args)
         {
+
+            var a = Regex.Escape(' '.ToString());
             Console.WriteLine("Hello World!");
         }
     }
