@@ -9,17 +9,17 @@ namespace Compiler.Models
 {
     class KeySet
     {
-        public List<KeyConstruction> KeyWords { get; private set; }
+        public List<KeyConstruction> KeyWords { get; private set; }//любые ключевые слова
 
-        public List<KeyConstruction> ValidChars { get; private set; }
+        public List<KeyConstruction> ValidChars { get; private set; }//любые сиволы, которые разделяют конструкции
 
-        public KeyConstruction LineEndSymbol { get => ValidChars.Where(x => x.Type == ConstructionType.LineEnd).First();}
+        public KeyConstruction LineEndSymbol { get => ValidChars.Where(x => x.Type == ConstructionType.LineEnd).First(); }//символ конца строки
 
-        public Tuple<KeyConstruction, KeyConstruction> MultiLineBrackets=null;
-        public KeyConstruction LinecommentSymbol=null;
+        public Tuple<KeyConstruction, KeyConstruction> MultiLineBrackets=null;//начало и конец многострочных комментариев
+        public KeyConstruction LinecommentSymbol=null;//начало однострочного комментария
 
-        public KeyConstruction StringSymbol { get=> ValidChars.Where(x => x.Type == ConstructionType.StringBrackets).First(); }
-        public KeyConstruction CharSymbol { get => ValidChars.Where(x => x.Type == ConstructionType.CharBrackets).First(); }
+        public KeyConstruction StringSymbol { get=> ValidChars.Where(x => x.Type == ConstructionType.StringBrackets).First(); }//символ начала и конца строки как значения
+        public KeyConstruction CharSymbol { get => ValidChars.Where(x => x.Type == ConstructionType.CharBrackets).First(); }//символ начала и конца символа как значения
 
         public KeySet()
         {

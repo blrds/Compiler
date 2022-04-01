@@ -114,7 +114,6 @@ namespace Compiler.Models
                     ruleSet.Spans.Add(span);
                 }
             }
-
             return ruleSet;
         }
 
@@ -131,7 +130,6 @@ namespace Compiler.Models
                             answer.KeyWords.Add(a);
                             break;
                         }
-
                     case ConstructionType.Brackets:
                         {
                             var b = a.Construction.Split('|');
