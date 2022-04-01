@@ -8,8 +8,10 @@ namespace ConTest
         static void Main(string[] args)
         {
 
-            var a = Regex.Escape(' '.ToString());
-            Console.WriteLine("Hello World!");
+            var a=Console.ReadLine();
+            var r = new Regex("\\bint\\b");
+            var b = a.Split("\\b");
+
         }
     }
 }

@@ -1,187 +1,82 @@
 [
   {
-    "Code": 0,
-    "Construction": "null",
-    "Type": 3
-  },
-  {
-    "Code": 1,
-    "Construction": "pINF",
-    "Type": 3
-  },
-  {
-    "Code": -1,
-    "Construction": "nINF",
-    "Type": 3
-  },
-  {
-    "Code": -2,
-    "Construction": "NaN",
-    "Type": 3
-  },
-  {
-    "Code": -2,
-    "Construction": "NaN",
-    "Type": 3
-  },
-  {
-    "Code": -3,
+    "Code": "str",
     "Construction": "\"|\"",
-    "Type": 1
+    "Type": 8
   },
   {
-    "Code": -4,
+    "Code": "char",
+    "Construction": "'|'",
+    "Type": 9
+  },
+  {
+    "Code": "mComs",
     "Construction": "/\\*|\\*/",
-    "Type": 1
+    "Type": 6
   },
   {
-    "Code": -5,
+    "Code": "lComs",
     "Construction": "//",
-    "Type": 1
+    "Type": 7
   },
   {
-    "Code": 2,
-    "Construction": "int",
-    "Type": 4
-  },
-  {
-    "Code": 3,
-    "Construction": "float",
-    "Type": 4
-  },
-  {
-    "Code": 4,
-    "Construction": "double",
-    "Type": 4
-  },
-  {
-    "Code": 5,
-    "Construction": "string",
-    "Type": 4
-  },
-  {
-    "Code": 6,
-    "Construction": "void",
-    "Type": 4
-  },
-  {
-    "Code": 7,
-    "Construction": "char",
-    "Type": 4
-  },
-  {
-    "Code": 8,
-    "Construction": "bool",
-    "Type": 4
-  },
-  {
-    "Code": 9,
+    "Code": "9",
     "Construction": "true",
     "Type": 3
   },
   {
-    "Code": 10,
+    "Code": "10",
     "Construction": "false",
     "Type": 3
   },
   {
-    "Code": 11,
-    "Construction": "byte",
-    "Type": 4
-  },
-  {
-    "Code": 12,
-    "Construction": "long",
-    "Type": 4
-  },
-  {
-    "Code": 13,
-    "Construction": "uint",
-    "Type": 4
-  },
-  {
-    "Code": 14,
-    "Construction": "ulong",
-    "Type": 4
-  },
-  {
-    "Code": 15,
+    "Code": "kw1",
     "Construction": "const",
     "Type": 0
   },
   {
-    "Code": 16,
-    "Construction": "break",
-    "Type": 0
-  },
-  {
-    "Code": 17,
-    "Construction": "continue",
-    "Type": 0
-  },
-  {
-    "Code": 18,
-    "Construction": "return",
-    "Type": 0
-  },
-  {
-    "Code": 19,
-    "Construction": "for",
-    "Type": 2
-  },
-  {
-    "Code": 20,
-    "Construction": "while|do",
-    "Type": 2
-  },
-  {
-    "Code": 21,
-    "Construction": "if|else",
-    "Type": 2
-  },
-  {
-    "Code": 22,
-    "Construction": "switch|case|default",
-    "Type": 2
-  },
-  {
-    "Code": 23,
+    "Code": "kw2",
     "Construction": "var",
-    "Type": 4
+    "Type": 0
   },
   {
-    "Code": 24,
+    "Code": "kw0",
     "Construction": "let",
+    "Type": 0
+  },
+  {
+    "Code": "sc0",
+    "Construction": "=",
     "Type": 4
   },
   {
-    "Code": 25,
-    "Construction": "=",
-    "Type": 5
-  },
-  {
-    "Code": 26,
+    "Code": "le",
     "Construction": ";",
     "Type": 5
   },
   {
-    "Code": 27,
+    "Code": "sc1",
     "Construction": "\\n",
-    "Type": 5
+    "Type": 4
   },
   {
-    "Code": 28,
+    "Code": "sc2",
     "Construction": " ",
-    "Type": 5
+    "Type": 4
   },
   {
-    "Code": 29,
+    "Code": "sc3",
     "Construction": "\\t",
-    "Type": 5
+    "Type": 4
   },
   {
-    "Code": 30,
+    "Code": "sc4",
     "Construction": "\\r",
-    "Type": 5
+    "Type": 4
+  },
+  {
+    "Code": "sc5",
+    "Construction": "\\b",
+    "Type": 4
   }
 ]

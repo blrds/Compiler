@@ -39,46 +39,11 @@ namespace Compiler.Models
 
             foreach (var a in keys)
             {
-                #region BracketsToSpanRule
-                if (a.Type == ConstructionType.Brackets)
-                {
-                    if (a.Construction.Contains('"') || a.Construction.Contains("*") || a.Construction.Contains("//"))
-                    {
-
-                        var span = new HighlightingSpan();
-                        string str = "";
-                        if (a.Construction.Contains("//"))
-                        {
-                            str = "Comments";
-                            span.StartExpression = new Regex(a.Construction, (RegexOptions)548);
-                            span.EndExpression = new Regex("$", (RegexOptions)516);
-                        }
-                        else
-                        {
-                            var split = a.Construction.Split('|');
-                            span.StartExpression = new Regex(split[0]);
-                            span.EndExpression = new Regex(split[1]);
-
-                            if (a.Construction.Contains('"')) str = "String";
-                            if (a.Construction.Contains("*")) str = "Comments";
-
-                        }
-                        span.SpanColor = colors.Where(x => x.Name == str).First();
-                        span.StartColor = colors.Where(x => x.Name == str).First();
-                        span.EndColor = colors.Where(x => x.Name == str).First();
-                        span.RuleSet = new HighlightingRuleSet { Name = str };
-                        span.SpanColorIncludesStart = true;
-                        span.SpanColorIncludesEnd = true;
-                        ruleSet.Spans.Add(span);
-
-                    }
-                }
-                #endregion
-                else
+                if (a.Type == ConstructionType.Construction || a.Type == ConstructionType.Keyword || a.Type == ConstructionType.Value)
                 {
                     var rule = new HighlightingRule();
                     bool add = true;
-                    if (a.Type == ConstructionType.Constructions)
+                    if (a.Type == ConstructionType.Construction)
                     {
                         rule.Color = colors.Where(x => x.Name == "Construction").First();
                         var split = a.Construction.Split('|');
@@ -98,11 +63,6 @@ namespace Compiler.Models
                                     rule.Color = colors.Where(x => x.Name == "Value").First();
                                     break;
                                 }
-                            case ConstructionType.Type:
-                                {
-                                    rule.Color = colors.Where(x => x.Name == "Word").First();
-                                    break;
-                                }
                             default:
                                 {
                                     add = false;
@@ -113,6 +73,45 @@ namespace Compiler.Models
                     }
                     if (add)
                         ruleSet.Rules.Add(rule);
+                }
+                else {
+                    var span = new HighlightingSpan();
+                    string str = "";
+                    if (a.Type == ConstructionType.MultilineComments)
+                    {
+                        var split = a.Construction.Split('|');
+                        span.StartExpression = new Regex(split[0]);
+                        span.EndExpression = new Regex(split[1]);
+                        str = "Comments";
+                    }
+                    else if (a.Type == ConstructionType.LineComment)
+                    {
+                        str = "Comments";
+                        span.StartExpression = new Regex(a.Construction, (RegexOptions)548);
+                        span.EndExpression = new Regex("$", (RegexOptions)516);
+                    }
+                    else if (a.Type == ConstructionType.StringBrackets)
+                    {
+                        str = "String";
+                        var split = a.Construction.Split('|');
+                        span.StartExpression = new Regex(split[0]);
+                        span.EndExpression = new Regex(split[1]);
+                    }
+                    else if (a.Type == ConstructionType.CharBrackets)
+                    {
+                        str = "String";
+                        var split = a.Construction.Split('|');
+                        span.StartExpression = new Regex(split[0]);
+                        span.EndExpression = new Regex(split[1]);
+                    }
+                    else continue;
+                    span.SpanColor = colors.Where(x => x.Name == str).First();
+                    span.StartColor = colors.Where(x => x.Name == str).First();
+                    span.EndColor = colors.Where(x => x.Name == str).First();
+                    span.RuleSet = new HighlightingRuleSet { Name = str };
+                    span.SpanColorIncludesStart = true;
+                    span.SpanColorIncludesEnd = true;
+                    ruleSet.Spans.Add(span);
                 }
             }
 
@@ -125,17 +124,71 @@ namespace Compiler.Models
             var keys = ExtractKeys();
             foreach (var a in keys)
             {
-                if (a.Type == ConstructionType.Operator || a.Type == ConstructionType.Brackets)
+                switch (a.Type)
                 {
-                    var b = a.Construction.Split('|');
-                    foreach (var c in b)
-                    answer.ValidChars.Add(new KeyConstruction(c,a.Type,a.Code));
-                }
-                else
-                {
-                    var b = a.Construction.Split('|');
-                    foreach (var c in b)
-                        answer.KeyWords.Add(new KeyConstruction(c, a.Type, a.Code));
+                    case ConstructionType.Keyword:
+                        {
+                            answer.KeyWords.Add(a);
+                            break;
+                        }
+
+                    case ConstructionType.Brackets:
+                        {
+                            var b = a.Construction.Split('|');
+                            foreach (var c in b)
+                                answer.ValidChars.Add(new KeyConstruction(c, a.Type, a.Code));
+                            break;
+                        }
+                    case ConstructionType.Construction:
+                        {
+                            var b = a.Construction.Split('|');
+                            foreach (var c in b)
+                                answer.KeyWords.Add(new KeyConstruction(c, a.Type, a.Code));
+                            break;
+                        }
+                    case ConstructionType.Value:
+                        {
+                            answer.KeyWords.Add(a);
+                            break;
+                        }
+                    case ConstructionType.SeparatorChar:
+                        {
+                            answer.ValidChars.Add(a);
+                            break;
+                        }
+                    case ConstructionType.LineEnd:
+                        {
+                            answer.ValidChars.Add(a);
+                            break;
+                        }
+                    case ConstructionType.MultilineComments:
+                        {
+                            var b = a.Construction.Split('|');
+                            var c0 = new KeyConstruction(b[0], a.Type, a.Code);
+                            var c1 = new KeyConstruction(b[1], a.Type, a.Code);
+                            answer.MultiLineBrackets = new System.Tuple<KeyConstruction, KeyConstruction>(c0, c1);
+                            break;
+                        }
+                    case ConstructionType.LineComment:
+                        {
+                            answer.LinecommentSymbol = a;
+                            break;
+                        }
+                    case ConstructionType.StringBrackets:
+                        {
+                            var b = a.Construction.Split('|');
+                            var c = new KeyConstruction(b[0], a.Type, a.Code);
+                            answer.ValidChars.Add(c);
+                            break;
+                        }
+                    case ConstructionType.CharBrackets:
+                        {
+                            var b = a.Construction.Split('|');
+                            var c = new KeyConstruction(b[0], a.Type, a.Code);
+                            answer.ValidChars.Add(c);
+                            break;
+                        }
+                    default: { break; }
                 }
             }
             return answer;

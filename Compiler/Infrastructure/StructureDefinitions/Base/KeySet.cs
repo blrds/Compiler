@@ -13,10 +13,19 @@ namespace Compiler.Models
 
         public List<KeyConstruction> ValidChars { get; private set; }
 
+        public KeyConstruction LineEndSymbol { get => ValidChars.Where(x => x.Type == ConstructionType.LineEnd).First();}
+
+        public Tuple<KeyConstruction, KeyConstruction> MultiLineBrackets=null;
+        public KeyConstruction LinecommentSymbol=null;
+
+        public KeyConstruction StringSymbol { get=> ValidChars.Where(x => x.Type == ConstructionType.StringBrackets).First(); }
+        public KeyConstruction CharSymbol { get => ValidChars.Where(x => x.Type == ConstructionType.CharBrackets).First(); }
+
         public KeySet()
         {
             KeyWords = new List<KeyConstruction>();
             ValidChars = new List<KeyConstruction>();
+            
         }
         public bool isValid(char c)
         {

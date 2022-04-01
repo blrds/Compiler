@@ -3,19 +3,23 @@
     enum ConstructionType { 
         Keyword,
         Brackets,
-        Constructions,
+        Construction,
         Value,
-        Type,
-        Operator
+        SeparatorChar,
+        LineEnd,
+        MultilineComments,//
+        LineComment,//
+        StringBrackets,//
+        CharBrackets//
     }
     class KeyConstruction
     {
         public string Construction { get; private set; }
         public ConstructionType Type { get; private set; }
 
-        public int Code { get; private set; }
+        public string Code { get; private set; }
 
-        public KeyConstruction(string construction, ConstructionType type, int code) {
+        public KeyConstruction(string construction, ConstructionType type, string code) {
             Construction = construction;
             Type = type;
             Code = code;

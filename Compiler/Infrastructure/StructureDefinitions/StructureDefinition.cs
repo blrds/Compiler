@@ -17,6 +17,15 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
             KeySet = RuleSetCreator.ExtractKeySet();
         }
 
+        public List<Line> Decomposite(string inline) {
+            var answer = new List<Line>();
+            for (int i = 0; i < inline.Length; i++) { 
+                
+            }
+            return answer;
+        }
+     /*   #region oldVersion
+
         private bool isNumber = true;//определяет число
         private bool isDotNumber = true;//определяет точку в числе
         private bool secondDotFlag = true;//определяет точку в числе
@@ -32,10 +41,10 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
             isString = false;
             isCom = false;
         }
-        public List<MainInformation> Decomposite(string inline)
+        public List<Line> Decomposite(string inline)
         {
             toDefault();
-            var answer = new List<MainInformation>();
+            var answer = new List<Line>();
 
             char a = '\0';
             int from = 0;
@@ -43,6 +52,7 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
             {
                 a = inline[i];
                 #region StringChecker
+                var line = new List<MainInformation>();
 
                 if (localLine == "" && a == '\"')
                 {
@@ -50,7 +60,7 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                 }
                 if (localLine != "" && a == '\"' && isString)
                 {
-                    answer.Add(new MainInformation("\""+localLine+"\"", "vs", from, i));
+                    line.Add(new MainInformation("\"" + localLine + "\"", "vs", from, i));
                     from = i + 1;
                     toDefault();
                     continue;
@@ -62,7 +72,7 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                     if (!isString)
                     {
                         #region Numbers
-                        if (!Char.IsDigit(a)&&a!='.'&& !KeySet.isValid(a))
+                        if (!Char.IsDigit(a) && a != '.' && !KeySet.isValid(a))
                         {
                             isNumber = false;
                         }
@@ -72,7 +82,8 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                             {
                                 secondDotFlag = false;
                                 isDotNumber = true;
-                            }else
+                            }
+                            else
                             {
                                 isDotNumber = false;
                                 isNumber = false;
@@ -88,9 +99,9 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                                 if (isNumber)
                                 {
                                     if (isDotNumber)
-                                        answer.Add(new MainInformation(localLine, "floatNUM", from, i-1));
+                                        line.Add(new MainInformation(localLine, "floatNUM", from, i - 1));
                                     else
-                                        answer.Add(new MainInformation(localLine, "intNUM", from, i-1));
+                                        line.Add(new MainInformation(localLine, "intNUM", from, i - 1));
                                 }
                                 else
                                 {
@@ -99,30 +110,36 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
 
                                         try
                                         {
-                                            answer.Add(new MainInformation(localLine, KeySet.KeyWord(localLine).Code.ToString(), from, i-1));
+                                            line.Add(new MainInformation(localLine, KeySet.KeyWord(localLine).Code.ToString(), from, i - 1));
                                         }
                                         catch (ArgumentNullException ne)
                                         {
-                                            answer.Add(new MainInformation(localLine, "ERROR0", from, i-1));
+                                            line.Add(new MainInformation(localLine, "ERROR0", from, i - 1));
                                         }
                                     }
-                                    else {
+                                    else
+                                    {
                                         if (Char.IsLetter(localLine[0]))
                                         {
-                                            answer.Add(new MainInformation(localLine, "varName", from, i-1));
+                                            line.Add(new MainInformation(localLine, "varName", from, i - 1));
                                         }
-                                        else {
-                                            answer.Add(new MainInformation(localLine, "ERROR0", from, i-1));
+                                        else
+                                        {
+                                            line.Add(new MainInformation(localLine, "ERROR0", from, i - 1));
                                         }
                                     }
                                 }
-                            answer.Add(new MainInformation(a.ToString(), KeySet.ValidChar(a).Code.ToString(), i, i));
+                            line.Add(new MainInformation(a.ToString(), KeySet.ValidChar(a).Code.ToString(), i, i));
+                            if (a.ToString() == KeySet.LineEndSymbol.Construction)
+                            {
+                                answer.Add(new Line(line));
+                            }
                             toDefault();
                             from = i + 1;
                         }
                         #endregion
 
-                        
+
                     }
                 }
                 if (!(localLine == "" && KeySet.isValid(a))) localLine += a;
@@ -135,7 +152,8 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                     }
                     if (a == '/' && inline[i - 1] == '*' && isCom)
                     {
-                        answer.Add(new MainInformation(localLine, "multiline comment", from, i));
+                        var hline = new Line();
+                        hline.Items.Add(new MainInformation(localLine, "multiline comment", from, i));
                         from = i + 1;
                         toDefault();
                         continue;
@@ -145,6 +163,7 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
 
             }
             return answer;
-        }
+        } 
+        #endregion*/
     }
 }
