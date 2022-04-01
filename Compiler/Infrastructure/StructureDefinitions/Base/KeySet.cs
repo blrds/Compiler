@@ -15,8 +15,8 @@ namespace Compiler.Models
 
         public KeyConstruction LineEndSymbol { get => ValidChars.Where(x => x.Type == ConstructionType.LineEnd).First(); }//символ конца строки
 
-        public Tuple<KeyConstruction, KeyConstruction> MultiLineBrackets=null;//начало и конец многострочных комментариев
-        public KeyConstruction LinecommentSymbol=null;//начало однострочного комментария
+        public Tuple<KeyConstruction, KeyConstruction> MultiLineBrackets=null;//начало и конец многострочных комментариев, не являюстя Валидами
+        public KeyConstruction LinecommentSymbol=null;//начало однострочного комментария, не являюстя Валидами
 
         public KeyConstruction StringSymbol { get=> ValidChars.Where(x => x.Type == ConstructionType.StringBrackets).First(); }//символ начала и конца строки как значения
         public KeyConstruction CharSymbol { get => ValidChars.Where(x => x.Type == ConstructionType.CharBrackets).First(); }//символ начала и конца символа как значения
