@@ -43,21 +43,38 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                     continue;
                     ;
                 }
-                if (a.ToString() == KeySet.CharSymbol.Construction) {
+                if (a.ToString() == KeySet.CharSymbol.Construction)
+                {
                     if (i + 3 < inline.Length && inline[i + 1] == '\\')
                     {
-
-                    }
-                    if (i + 2 < inline.Length) {
-                        if (inline[i + 2] == '\'') answer.Last().Items.Add(new MainInformation(inline[i + 1].ToString(), "char", i, i + 2));
-                        else {
+                        if (inline[i + 3] == '\'')
+                            answer.Last().Items.Add(new MainInformation(inline[i + 1].ToString() + inline[i + 2].ToString(), "char", i, i + 3));
+                        else
+                        {
                             int counter = 1;
-                            while (true) {
-                                counter++;
+                            while (true)
+                            {
                                 localLine += inline[i + counter];
+                                counter++;
                                 if (inline[i + counter] == '\'') break;
                             }
-                            answer.Last().Items.Add(new MainInformation('\'' + localLine, "ERROR2|Unreal char", i, i+counter));
+                            answer.Last().Items.Add(new MainInformation('\'' + localLine, "ERROR2|Unreal char", i, i + counter));
+                        }
+
+                    }
+                    if (i + 2 < inline.Length)
+                    {
+                        if (inline[i + 2] == '\'') answer.Last().Items.Add(new MainInformation(inline[i + 1].ToString(), "char", i, i + 2));
+                        else
+                        {
+                            int counter = 1;
+                            while (true)
+                            {
+                                localLine += inline[i + counter];
+                                counter++;
+                                if (inline[i + counter] == '\'') break;
+                            }
+                            answer.Last().Items.Add(new MainInformation('\'' + localLine, "ERROR2|Unreal char", i, i + counter));
                         }
                     }
                 }
