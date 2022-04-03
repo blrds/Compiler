@@ -271,7 +271,7 @@ namespace Compiler.ViewModels
             OutputText.Text = "";
             foreach (var a in answer)
             {
-                OutputText.Text += a.ToString();
+                OutputText.Text += a.ToString()+"\n";
             }
         }
         #endregion

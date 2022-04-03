@@ -38,8 +38,17 @@ namespace Compiler.Models
         }
         public KeyConstruction ValidChar(char c) {
             if (isValid(c))
-                return ValidChars.Where(x =>x.Construction == Regex.Escape(c.ToString())).First();
-            else throw new NullReferenceException("ValidChar");
+            {
+                try
+                {
+                    return ValidChars.Where(x => x.Construction == Regex.Escape(c.ToString())).First();
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+            }
+            else return null;
         }
         public bool isKeyWord(string word)
         {
@@ -52,8 +61,17 @@ namespace Compiler.Models
         }
         public KeyConstruction KeyWord(string line) {
             if (isKeyWord(line))
-                return KeyWords.Where(x => x.Construction == line).First();
-            else throw new NullReferenceException("KeyWord");
+            {
+                try
+                {
+                    return KeyWords.Where(x => x.Construction == line).First();
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+            }
+            else return null;
         }
     }
 }

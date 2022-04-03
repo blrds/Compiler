@@ -16,5 +16,13 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
         {
             Items = new List<MainInformation>();
         }
+
+        public override string ToString()
+        {
+            string answer = "";
+            foreach (var a in Items)
+                answer += (a.Code + " ");
+            return answer;
+        }
     }
 }
