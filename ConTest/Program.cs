@@ -8,9 +8,9 @@ namespace ConTest
         static void Main(string[] args)
         {
 
-            var a=Console.ReadLine();
-            var r = new Regex("\\bint\\b");
-            var b = a.Split("\\b");
+            var a = "tRuE";
+            var b = Boolean.Parse(a);
+            Console.WriteLine(b.ToString());
 
         }
     }

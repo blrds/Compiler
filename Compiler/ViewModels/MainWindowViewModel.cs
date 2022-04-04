@@ -1,5 +1,6 @@
 ﻿using Compiler.Infrastructure.Commands;
 using Compiler.Infrastructure.StructureDefinitions.Base;
+using Compiler.Infrastructure.GrammarCheckerStructure;
 using Compiler.Models;
 using Compiler.ViewModels.Base;
 using Compiler.Views.Windows;
@@ -267,11 +268,14 @@ namespace Compiler.ViewModels
                 fullText = TextEditor(SelectedItem).SelectedText;
             else fullText = TextEditor(SelectedItem).Text;
             if (StructureDefinition == null) StructureDefinition = new StructureDefinition();
-            var answer = StructureDefinition.Decomposite(fullText);
+            var lines = StructureDefinition.Decomposite(fullText);
+            var answer = GrammarChecker.VariablesDecloration(lines);
             OutputText.Text = "";
             foreach (var a in answer)
             {
                 OutputText.Text += a.ToString()+"\n";
+                foreach (var b in a.DeclorationErrors)
+                    OutputText.Text += b.Message + "\n";
             }
         }
         #endregion

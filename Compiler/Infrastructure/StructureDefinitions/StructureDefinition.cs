@@ -44,33 +44,14 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                     from = i;
                     continue;
                 }
-                if (a.ToString() == KeySet.CharSymbol.Construction && localLine == "")
-                {
-                    from = i;
-                    int j = i + 1;
-                    localLine += '\'';
-                    for (; j < inline.Length; j++)
-                    {
-                        localLine += inline[j];
-                        if (j + 1 == inline.Length || inline[j] == '\'') break;
-                    }
-                    if (j + 1 == inline.Length && inline[j] != '\'') answer.Last().Items.Add(new MainInformation(localLine, "ERROR1|Uncompleted char", from, j));
-                    else answer.Last().Items.Add(new MainInformation(localLine, "char", from, j + 1));
-                    i = j;
-                    localLine = "";
-                    from = i;
-                    continue;
-                }
 
                 if (KeySet.isValid(a) || i + 1 == inline.Length)
                 {
-                    if (!KeySet.isValid(a) || i + 1 == inline.Length)
-                        localLine += a;
                     if (localLine != "")
                     {
                         var word = KeySet.KeyWord(localLine);
                         if (word != null)
-                            answer.Last().Items.Add(new MainInformation(a.ToString(), "kw", from, i));
+                            answer.Last().Items.Add(new MainInformation(localLine.ToString(), "kw", from, i));
                         else
                         {
                             int num = 0;
@@ -91,7 +72,7 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                     if (KeySet.isValid(a))
                     {
                         answer.Last().Items.Add(new MainInformation(a.ToString(), "vc", i, i));
-                        if (a.ToString() == KeySet.LineEndSymbol.Construction)
+                        if (a.ToString() == KeySet.LineEndSymbol.Construction && i+1!=inline.Length)
                             answer.Add(new Line());
                     }
                     from = i + 1;

@@ -70,13 +70,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Infrastructure\GrammarChecker.cs" />
+    <Compile Include="Infrastructure\GrammarCheckerStructure\GrammarChecker.cs" />
     <Compile Include="Infrastructure\StructureDefinitions\Base\KeySet.cs" />
     <Compile Include="Infrastructure\StructureDefinitions\Base\Line.cs" />
     <Compile Include="Infrastructure\StructureDefinitions\Base\MainInformation.cs" />
     <Compile Include="Infrastructure\StructureDefinitions\StructureDefinition.cs" />
     <Compile Include="Models\RuleSetCreator.cs" />
-    <Compile Include="Models\Variable.cs" />
+    <Compile Include="Infrastructure\GrammarCheckerStructure\Base\Variable.cs" />
     <Compile Include="Views\Windows\TextMessage.xaml.cs">
       <DependentUpon>TextMessage.xaml</DependentUpon>
     </Compile>

@@ -19,7 +19,7 @@ namespace Compiler.Models
         public KeyConstruction LinecommentSymbol=null;//начало однострочного комментария, не являюстя Валидами
 
         public KeyConstruction StringSymbol { get=> ValidChars.Where(x => x.Type == ConstructionType.StringBrackets).First(); }//символ начала и конца строки как значения
-        public KeyConstruction CharSymbol { get => ValidChars.Where(x => x.Type == ConstructionType.CharBrackets).First(); }//символ начала и конца символа как значения
+        
 
         public KeySet()
         {
