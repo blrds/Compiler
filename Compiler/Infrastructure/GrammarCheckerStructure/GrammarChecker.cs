@@ -15,6 +15,7 @@ namespace Compiler.Infrastructure.GrammarCheckerStructure
             List<Variable> answer = new List<Variable>();
             
             foreach (var line in lines) {
+                var variable = new Line();
                 int[] array = new int[] {-1, -1, -1, -1, -1};
                 if (line.Items.Where(x => x.Code != "vc").Any()) answer.Add(new Variable());
                 int i = 0;
@@ -88,7 +89,14 @@ namespace Compiler.Infrastructure.GrammarCheckerStructure
                         else array[4] = i;
                     }
                     i++;
-                }    
+                }
+                bool flag = true;
+                for (int j = 0; j < array.Length-1; j++) {
+                    if (!(array[j] == j && array[j] < array[j + 1])) flag &= false;
+                    else flag &= true;
+                }
+                flag &= array[array.Length - 1] == array.Length - 1;
+                answer.Last().isCorrect = flag&(!answer.Last().DeclorationErrors.Any());
             }
             return answer;
         }

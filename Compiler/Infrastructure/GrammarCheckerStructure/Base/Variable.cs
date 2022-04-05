@@ -18,6 +18,8 @@ namespace Compiler.Models
         public string Name { get; set; }
         public object Value { get; set; }
         public string Type { get; set; }
+
+        public bool isCorrect { get; set; }
         public List<ArgumentException> DeclorationErrors { get; private set; }
 
         public Variable() {
@@ -26,11 +28,12 @@ namespace Compiler.Models
             Name = "";
             Value = null;
             Type = "";
+            isCorrect = false;
         }
 
         public override string ToString()
         {
-            return Name + "=" + Value.ToString();
+            return Name + "=" + Value.ToString()+" "+isCorrect.ToString();
         }
     }
 }
