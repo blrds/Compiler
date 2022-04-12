@@ -97,13 +97,6 @@ namespace Compiler.Models
                         span.StartExpression = new Regex(split[0]);
                         span.EndExpression = new Regex(split[1]);
                     }
-                    else if (a.Type == ConstructionType.CharBrackets)
-                    {
-                        str = "String";
-                        var split = a.Construction.Split('|');
-                        span.StartExpression = new Regex(split[0]);
-                        span.EndExpression = new Regex(split[1]);
-                    }
                     else continue;
                     span.SpanColor = colors.Where(x => x.Name == str).First();
                     span.StartColor = colors.Where(x => x.Name == str).First();
@@ -125,16 +118,18 @@ namespace Compiler.Models
             {
                 switch (a.Type)
                 {
+                    case ConstructionType.EqualChar: {
+                            answer.EqualChars.Add(a);
+                            break;
+                        }
                     case ConstructionType.Keyword:
                         {
                             answer.KeyWords.Add(a);
                             break;
                         }
-                    case ConstructionType.Brackets:
+                    case ConstructionType.NumPoint:
                         {
-                            var b = a.Construction.Split('|');
-                            foreach (var c in b)
-                                answer.ValidChars.Add(new KeyConstruction(c, a.Type, a.Code));
+                            answer.NumPoint = a;
                             break;
                         }
                     case ConstructionType.Construction:
@@ -149,14 +144,9 @@ namespace Compiler.Models
                             answer.KeyWords.Add(a);
                             break;
                         }
-                    case ConstructionType.SeparatorChar:
-                        {
-                            answer.ValidChars.Add(a);
-                            break;
-                        }
                     case ConstructionType.LineEnd:
                         {
-                            answer.ValidChars.Add(a);
+                            answer.LineEndChars.Add(a);
                             break;
                         }
                     case ConstructionType.MultilineComments:
@@ -176,14 +166,11 @@ namespace Compiler.Models
                         {
                             var b = a.Construction.Split('|');
                             var c = new KeyConstruction(b[0], a.Type, a.Code);
-                            answer.ValidChars.Add(c);
+                            answer.StringChars.Add(c);
                             break;
                         }
-                    case ConstructionType.CharBrackets:
-                        {
-                            var b = a.Construction.Split('|');
-                            var c = new KeyConstruction(b[0], a.Type, a.Code);
-                            answer.ValidChars.Add(c);
+                    case ConstructionType.VariableSymbol: {
+                            answer.InVarsChars.Add(a);
                             break;
                         }
                     default: { break; }

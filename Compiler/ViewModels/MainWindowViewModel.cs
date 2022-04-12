@@ -18,10 +18,11 @@ using System.Security;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Diagnostics;
 
 namespace Compiler.ViewModels
 {
-    internal class MainWindowViewModel:ViewModel
+    internal class MainWindowViewModel : ViewModel
     {
         const string about = "about.txt";
         const string reference = "reference.txt";
@@ -39,9 +40,11 @@ namespace Compiler.ViewModels
         /// <summary>Collection of the tabs</summary>
         public ObservableCollection<TabItem> TabItems { get; set; }
         #region propsForTabs
-        private TabItem SelectedItem=>TabItems.Where(x => x.IsSelected).First();
-        private int SelectedIndex { 
-            get{
+        private TabItem SelectedItem => TabItems.Where(x => x.IsSelected).First();
+        private int SelectedIndex
+        {
+            get
+            {
                 for (int i = 0; i < TabItems.Count; i++)
                 {
                     if (TabItems[i].IsSelected) return i;
@@ -51,11 +54,13 @@ namespace Compiler.ViewModels
             set => TabItems[value].IsSelected = true;
         }
 
-        private TextEditor TextEditor(TabItem tab) {
-            return tab.Content as TextEditor; 
+        private TextEditor TextEditor(TabItem tab)
+        {
+            return tab.Content as TextEditor;
         }
 
-        private TextEditor TextEditor(int index) {
+        private TextEditor TextEditor(int index)
+        {
             return TextEditor(TabItems[index]);
         }
 
@@ -63,7 +68,7 @@ namespace Compiler.ViewModels
         #endregion
         /// <summary>OutPut  Text</summary>
         public TextDocument OutputText { get; private set; } = new TextDocument();
-    
+
         #endregion
         #endregion
 
@@ -85,12 +90,14 @@ namespace Compiler.ViewModels
             });
             var sp = (TabItems.Last().Header as StackPanel);
             sp.Children.Add(new TextBlock { Text = name });
-            var i = sp.Children.Add(new Button { 
-                Content = new ImageAwesome {
-                    Icon=EFontAwesomeIcon.Regular_WindowClose, 
-                    Height=15,
+            var i = sp.Children.Add(new Button
+            {
+                Content = new ImageAwesome
+                {
+                    Icon = EFontAwesomeIcon.Regular_WindowClose,
+                    Height = 15,
                 },
-                BorderThickness=new Thickness(0)
+                BorderThickness = new Thickness(0)
             });
             TabItems.Last().IsSelected = true;
 
@@ -151,7 +158,8 @@ namespace Compiler.ViewModels
         #region OpenFileCommand
         public ICommand OpenFileCommand { get; }
         private bool CanOpenFileCommnadExecute(object p) => true;
-        private void OnOpenFileCommandExecuted(object p) {
+        private void OnOpenFileCommandExecuted(object p)
+        {
             System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
             ofd.Filter = "mupl files (*.mupl)|*.mupl|txt files (*.txt)|*.txt";
             ofd.AddExtension = true;
@@ -194,7 +202,7 @@ namespace Compiler.ViewModels
 
                     File.WriteAllText(((SelectedItem.Header as StackPanel).Children[0] as TextBlock).Text, tb.Text);
                 }
-                catch (ArgumentException exp) { OutputText.Text="Данный путь недопустим или содержит недопустимые символы"; }
+                catch (ArgumentException exp) { OutputText.Text = "Данный путь недопустим или содержит недопустимые символы"; }
                 catch (PathTooLongException exp) { OutputText.Text = "Путь или имя файла превышают допустимую длину"; }
                 catch (DirectoryNotFoundException exp) { OutputText.Text = "Указан недопустимый путь (например, он ведет на несопоставленный диск)"; }
                 catch (IOException exp) { OutputText.Text = "При открытии файла произошла ошибка ввода-вывода"; }
@@ -208,7 +216,7 @@ namespace Compiler.ViewModels
 
         #region SaveAsCommand
         public ICommand SaveAsCommand { get; }
-        private bool CanSaveAsCommnadExecute(object p) => (TabItems.Count > 0 ? true : false)&&(SelectedIndex!=-1);
+        private bool CanSaveAsCommnadExecute(object p) => (TabItems.Count > 0 ? true : false) && (SelectedIndex != -1);
         private void OnSaveAsCommandExecuted(object p)
         {
             SaveFileDialog sfd = new SaveFileDialog();
@@ -219,7 +227,7 @@ namespace Compiler.ViewModels
             {
                 TextEditor tb = TextEditor(SelectedItem);
                 File.WriteAllText(sfd.FileName, tb.Text);
-                OutputText.Text="Успешно";
+                OutputText.Text = "Успешно";
                 (SelectedItem.Header as TextBlock).Text = sfd.FileName;
             }
         }
@@ -256,10 +264,11 @@ namespace Compiler.ViewModels
 
         #region StringDecompilationCommand
         public ICommand StringDecompilationCommand { get; }
-        private bool CanStringDecompilationCommnadExecute(object p) {
+        private bool CanStringDecompilationCommnadExecute(object p)
+        {
             var a = TextEditor(SelectedItem);
             return (a.Text != "" || a.SelectedText != "");
-                
+
         }
         private void OnStringDecompilationCommandExecuted(object p)
         {
@@ -273,12 +282,104 @@ namespace Compiler.ViewModels
             OutputText.Text = "";
             foreach (var a in answer)
             {
-                OutputText.Text += a.ToString()+"\n";
+                OutputText.Text += a.ToString() + "\n";
                 foreach (var b in a.DeclorationErrors)
                     OutputText.Text += b.Message + "\n";
             }
         }
         #endregion
+
+        #region StatementCommand
+
+        public ICommand StatementCommand { get; }
+        private bool CanStatementCommnadExecute(object p) => true;
+        private void OnStatementCommandExecuted(object p)
+        {
+            FileInfo fileInfo = new FileInfo("kr.pdf");
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://"+fileInfo.FullName+"#page=3"));
+        }
+
+        #endregion
+        #region GrammarCommand
+
+        public ICommand GrammarCommand { get; }
+        private bool CanGrammarCommnadExecute(object p) => true;
+        private void OnGrammarCommandExecuted(object p)
+        {
+            FileInfo fileInfo = new FileInfo("kr.pdf");
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=4"));
+        }
+
+        #endregion
+
+        #region GrammarClassificationCommand
+
+        public ICommand GrammarClassificationCommand { get; }
+        private bool CanGrammarClassificationCommnadExecute(object p) => true;
+        private void OnGrammarClassificationCommandExecuted(object p)
+        {
+            FileInfo fileInfo = new FileInfo("kr.pdf");
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=5"));
+        }
+
+        #endregion
+        #region AnalysisMethodCommand
+
+        public ICommand AnalysisMethodCommand { get; }
+        private bool CanAnalysisMethodCommnadExecute(object p) => true;
+        private void OnAnalysisMethodCommandExecuted(object p)
+        {
+            FileInfo fileInfo = new FileInfo("kr.pdf");
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=7"));
+        }
+
+        #endregion
+        #region ErrorsResolveCommand
+
+        public ICommand ErrorsResolveCommand { get; }
+        private bool CanErrorsResolveCommnadExecute(object p) => true;
+        private void OnErrorsResolveCommandExecuted(object p)
+        {
+            FileInfo fileInfo = new FileInfo("kr.pdf");
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=8"));
+        }
+
+        #endregion
+        #region TestsCommand
+
+        public ICommand TestsCommand { get; }
+        private bool CanTestsCommnadExecute(object p) => true;
+        private void OnTestsCommandExecuted(object p)
+        {
+            FileInfo fileInfo = new FileInfo("kr.pdf");
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=9"));
+        }
+
+        #endregion
+        #region LiteratureCommand
+
+        public ICommand LiteratureCommand { get; }
+        private bool CanLiteratureCommnadExecute(object p) => true;
+        private void OnLiteratureCommandExecuted(object p)
+        {
+            FileInfo fileInfo = new FileInfo("kr.pdf");
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=28"));
+        }
+
+        #endregion
+        #region CodeCommand
+
+        public ICommand CodeCommand { get; }
+        private bool CanCodeCommnadExecute(object p) => true;
+        private void OnCodeCommandExecuted(object p)
+        {
+            FileInfo fileInfo = new FileInfo("kr.pdf");
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=11"));
+        }
+
+        #endregion
+
+
         #endregion
 
         #region Events
@@ -294,7 +395,8 @@ namespace Compiler.ViewModels
             }
         }
         #endregion
-        public MainWindowViewModel() {
+        public MainWindowViewModel()
+        {
             #region Commands
             OpenFileCommand = new LambdaCommand(OnOpenFileCommandExecuted, CanOpenFileCommnadExecute);
             CreateCommand = new LambdaCommand(OnCreateCommandExecuted, CanCreateCommnadExecute);
@@ -304,6 +406,14 @@ namespace Compiler.ViewModels
             ReferenceCommand = new LambdaCommand(OnReferenceCommandExecuted, CanReferenceCommnadExecute);
             AboutCommand = new LambdaCommand(OnAboutCommandExecuted, CanAboutCommnadExecute);
             StringDecompilationCommand = new LambdaCommand(OnStringDecompilationCommandExecuted, CanStringDecompilationCommnadExecute);
+            StatementCommand = new LambdaCommand(OnStatementCommandExecuted, CanStatementCommnadExecute);
+            GrammarCommand = new LambdaCommand(OnGrammarCommandExecuted, CanGrammarCommnadExecute);
+            GrammarClassificationCommand = new LambdaCommand(OnGrammarClassificationCommandExecuted, CanGrammarClassificationCommnadExecute);
+            AnalysisMethodCommand = new LambdaCommand(OnAnalysisMethodCommandExecuted, CanAnalysisMethodCommnadExecute);
+            ErrorsResolveCommand = new LambdaCommand(OnErrorsResolveCommandExecuted, CanErrorsResolveCommnadExecute);
+            TestsCommand = new LambdaCommand(OnTestsCommandExecuted, CanTestsCommnadExecute);
+            LiteratureCommand = new LambdaCommand(OnLiteratureCommandExecuted, CanLiteratureCommnadExecute);
+            CodeCommand = new LambdaCommand(OnCodeCommandExecuted, CanCodeCommnadExecute);
             #endregion
             TabItems = new ObservableCollection<TabItem>();
             ruleSet = RuleSetCreator.ExtractRuleSet();
@@ -312,6 +422,6 @@ namespace Compiler.ViewModels
 
             OnCreateCommandExecuted(this);
         }
-         
+
     }
 }

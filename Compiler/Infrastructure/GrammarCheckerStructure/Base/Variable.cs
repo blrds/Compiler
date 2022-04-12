@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Compiler.Models
 {
@@ -19,7 +16,7 @@ namespace Compiler.Models
         public Variable() {
             DeclorationErrors = new List<ArgumentException>();
             Decloration = "const";
-            Name = "";
+            Name = "a";
             Value = null;
             Type = "";
             isCorrect = false;
@@ -30,7 +27,7 @@ namespace Compiler.Models
             string val = "";
             if (Value != null) val = Value.ToString();
             else val = "null";
-            return Decloration.ToString()+" "+Name + "=" +val;
+            return Decloration.ToString()+" "+Name + "=" +val+";";
         }
     }
 }

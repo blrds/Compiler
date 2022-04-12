@@ -95,43 +95,43 @@
                 <MenuItem.Header>
                     <TextBlock Text="Текст"/>
                 </MenuItem.Header>
-                <MenuItem Name="task">
+                <MenuItem Name="task" Command="{Binding StatementCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Постановка задачи"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="grammar">
+                <MenuItem Name="grammar" Command="{Binding GrammarCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Грамматика"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="grammarClass">
+                <MenuItem Name="grammarClass" Command="{Binding GrammarClassificationCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Классификация грамматики"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="analisMethod">
+                <MenuItem Name="analisMethod" Command="{Binding AnalysisMethodCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Метод анализа"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="errors">
+                <MenuItem Name="errors" Command="{Binding ErrorsResolveCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Диагностика и нейтрализация ошибок"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="example">
+                <MenuItem Name="example" Command="{Binding TestsCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Тестовый пример"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Name="literature">
+                <MenuItem Name="literature" Command="{Binding LiteratureCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Список литературы"/>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem>
-                    <MenuItem.Header>
+                <MenuItem Command="{Binding CodeCommand}">
+                    <MenuItem.Header >
                         <TextBlock Text="Исходный код программы"/>
                     </MenuItem.Header>
                 </MenuItem>

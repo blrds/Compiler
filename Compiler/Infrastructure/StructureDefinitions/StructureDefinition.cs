@@ -1,11 +1,7 @@
 ﻿using Compiler.Models;
-using ICSharpCode.AvalonEdit.Highlighting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Compiler.Infrastructure.StructureDefinitions.Base
 {
@@ -17,6 +13,18 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
             KeySet = RuleSetCreator.ExtractKeySet();
         }
 
+        public bool isVarSuitable(string name)
+        {
+            if (KeySet.isInVarChar(name[0]) && (name.Length == 1 || !Char.IsLetter(name[1])))return false;
+
+            if (Char.IsLetter(name[0]) && !KeySet.isValid(name[0]))
+                for (int i = 1; i < name.Length; i++)
+                {
+                    if (!Char.IsLetterOrDigit(name[i]) && !KeySet.isInVarChar(name[i])) return false;
+                }
+            else return false;
+            return true;
+        }
         public List<Line> Decomposite(string inline)
         {
             var answer = new List<Line>();
@@ -27,7 +35,7 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
             for (int i = 0; i < inline.Length; i++)
             {
                 a = inline[i];
-                if (a.ToString() == KeySet.StringSymbol.Construction && localLine == "")
+                if (KeySet.isStringChar(a) && localLine == "")
                 {
                     from = i;
                     int j = i + 1;
@@ -47,7 +55,7 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
 
                 if (KeySet.isValid(a) || i + 1 == inline.Length)
                 {
-                    if (!KeySet.isValid(a) && i+1==inline.Length)
+                    if (!KeySet.isValid(a) && i + 1 == inline.Length)
                     {
                         localLine += a;
                     }
@@ -55,7 +63,7 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                     {
                         var word = KeySet.KeyWord(localLine);
                         if (word != null)
-                            answer.Last().Items.Add(new MainInformation(localLine.ToString(), "kw", from, i));
+                            answer.Last().Items.Add(new MainInformation(localLine.ToString(), word.Code, from, i));
                         else
                         {
                             int num = 0;
@@ -63,12 +71,16 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                                 answer.Last().Items.Add(new MainInformation(num.ToString(), "num", from, i));
                             else
                             {
-                                double dnum = 0;
-                                if (double.TryParse(localLine, out dnum))
+                                float dnum = 0;
+                                var helpline = localLine.Replace(KeySet.NumPoint.Construction.Last(), ',');
+                                if (float.TryParse(helpline, out dnum))
                                     answer.Last().Items.Add(new MainInformation(dnum.ToString(), "dnum", from, i));
                                 else
                                 {
-                                    answer.Last().Items.Add(new MainInformation(localLine.ToString(), "id", from, i));
+                                    if (isVarSuitable(localLine))
+                                        answer.Last().Items.Add(new MainInformation(localLine, "id", from, i));
+                                    else
+                                        answer.Last().Items.Add(new MainInformation(localLine, "error", from, i));
                                 }
                             }
                         }
@@ -76,7 +88,7 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                     if (KeySet.isValid(a))
                     {
                         answer.Last().Items.Add(new MainInformation(a.ToString(), "vc", i, i));
-                        if (a.ToString() == KeySet.LineEndSymbol.Construction && i + 1 != inline.Length)
+                        if (KeySet.isLineEndChar(a) && i + 1 != inline.Length)
                             answer.Add(new Line());
                     }
                     from = i + 1;
