@@ -47,6 +47,10 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
 
                 if (KeySet.isValid(a) || i + 1 == inline.Length)
                 {
+                    if (!KeySet.isValid(a) && i+1==inline.Length)
+                    {
+                        localLine += a;
+                    }
                     if (localLine != "")
                     {
                         var word = KeySet.KeyWord(localLine);
@@ -72,7 +76,7 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                     if (KeySet.isValid(a))
                     {
                         answer.Last().Items.Add(new MainInformation(a.ToString(), "vc", i, i));
-                        if (a.ToString() == KeySet.LineEndSymbol.Construction && i+1!=inline.Length)
+                        if (a.ToString() == KeySet.LineEndSymbol.Construction && i + 1 != inline.Length)
                             answer.Add(new Line());
                     }
                     from = i + 1;

@@ -6,15 +6,9 @@ using System.Threading.Tasks;
 
 namespace Compiler.Models
 {
-    enum DeclorationType{
-        var,
-        let,
-        constant,
-        unsigned
-    }
     class Variable
     {
-        public DeclorationType Decloration { get; set; }
+        public string Decloration { get; set; }
         public string Name { get; set; }
         public object Value { get; set; }
         public string Type { get; set; }
@@ -24,7 +18,7 @@ namespace Compiler.Models
 
         public Variable() {
             DeclorationErrors = new List<ArgumentException>();
-            Decloration = DeclorationType.unsigned;
+            Decloration = "const";
             Name = "";
             Value = null;
             Type = "";
@@ -33,7 +27,10 @@ namespace Compiler.Models
 
         public override string ToString()
         {
-            return Name + "=" + Value.ToString()+" "+isCorrect.ToString();
+            string val = "";
+            if (Value != null) val = Value.ToString();
+            else val = "null";
+            return Decloration.ToString()+" "+Name + "=" +val;
         }
     }
 }
