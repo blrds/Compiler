@@ -330,7 +330,7 @@ namespace Compiler.ViewModels
         private void OnAnalysisMethodCommandExecuted(object p)
         {
             FileInfo fileInfo = new FileInfo("kr.pdf");
-            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=7"));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=8"));
         }
 
         #endregion
@@ -341,7 +341,7 @@ namespace Compiler.ViewModels
         private void OnErrorsResolveCommandExecuted(object p)
         {
             FileInfo fileInfo = new FileInfo("kr.pdf");
-            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=8"));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=9"));
         }
 
         #endregion
@@ -352,7 +352,7 @@ namespace Compiler.ViewModels
         private void OnTestsCommandExecuted(object p)
         {
             FileInfo fileInfo = new FileInfo("kr.pdf");
-            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=9"));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=11"));
         }
 
         #endregion
@@ -363,7 +363,7 @@ namespace Compiler.ViewModels
         private void OnLiteratureCommandExecuted(object p)
         {
             FileInfo fileInfo = new FileInfo("kr.pdf");
-            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=28"));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=10"));
         }
 
         #endregion
@@ -374,7 +374,7 @@ namespace Compiler.ViewModels
         private void OnCodeCommandExecuted(object p)
         {
             FileInfo fileInfo = new FileInfo("kr.pdf");
-            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=11"));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=16"));
         }
 
         #endregion

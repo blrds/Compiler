@@ -21,8 +21,8 @@ namespace Compiler.Infrastructure.GrammarCheckerStructure
                 int i = 0;
                 foreach (var a in line.Items)
                 {
-                    if (a.Code == "error") answer.Last().DeclorationErrors.Add(new ArgumentException("Непредвиденная конструкция " + a.Construction + " на позиции " + a.From + ":" + a.To));
-                    if (a.Construction != "=" && a.Construction != ";" && a.Code == "vc") continue;
+                    if (a.Code.ToLower().Contains("error")) answer.Last().DeclorationErrors.Add(new ArgumentException(a.Code+" "+a.Construction+" " + a.From + ":" + a.To));
+                    if (a.Construction != "=" && a.Construction != ";" && a.Code == "vc" || a.Code=="mlc") continue;
                     if (a.Construction == "let" || a.Construction == "var" || a.Construction == "const")
                     {
                         if (array[0] != -1)

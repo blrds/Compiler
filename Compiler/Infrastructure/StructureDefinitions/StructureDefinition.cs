@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Compiler.Infrastructure.StructureDefinitions.Base
 {
@@ -15,7 +16,7 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
 
         public bool isVarSuitable(string name)
         {
-            if (KeySet.isInVarChar(name[0]) && (name.Length == 1 || !Char.IsLetter(name[1])))return false;
+            if (KeySet.isInVarChar(name[0]) && (name.Length == 1 || !Char.IsLetter(name[1]))) return false;
 
             if (Char.IsLetter(name[0]) && !KeySet.isValid(name[0]))
                 for (int i = 1; i < name.Length; i++)
@@ -35,6 +36,8 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
             for (int i = 0; i < inline.Length; i++)
             {
                 a = inline[i];
+                #region str
+
                 if (KeySet.isStringChar(a) && localLine == "")
                 {
                     from = i;
@@ -52,6 +55,58 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                     from = i;
                     continue;
                 }
+                #endregion
+                #region mlc
+                if (i <= inline.Length - 5 && Regex.Escape(a + "" + inline[i + 1]) == KeySet.MultiLineBrackets.Item1.Construction)
+                {
+                    string safeline = KeySet.MultiLineBrackets.Item1.Construction;
+                    char b = '\0';
+                    int j = 0;
+                    bool flag = false;
+                    for (j = i + 2; j < inline.Length; j++)
+                    {
+                        b = inline[j];
+                        if (Regex.Escape(b + "" + inline[j + 1]) == KeySet.MultiLineBrackets.Item2.Construction)
+                        {
+                            flag = true;
+                            break;
+                        }
+                        else safeline += b;
+                    }
+                    if (flag)
+                    {
+                        safeline += KeySet.MultiLineBrackets.Item2.Construction;
+                        answer.Last().Items.Add(new MainInformation(safeline, "mlc", i, j + 1));
+                    }
+                    else answer.Last().Items.Add(new MainInformation(safeline, "ERROR3|незаконченный многострочный комментарий", i, j + 1));
+                    i = j + 1;
+                    continue;
+                }
+                #endregion
+                #region lc
+                if (i <= inline.Length - 2 && Regex.Escape(a + "" + inline[i + 1]) == KeySet.LinecommentSymbol.Construction)
+                {
+                    string safeline = KeySet.LinecommentSymbol.Construction;
+                    char b = '\0';
+                    int j = 0;
+                    bool flag = false;
+                    for (j = i + 2; j < inline.Length; j++)
+                    {
+                        b = inline[j];
+                        if (b == '\r')
+                        {
+                            flag = true;
+                            break;
+                        }
+                        else safeline += b;
+                    }
+                    safeline += '\r';
+                    answer.Last().Items.Add(new MainInformation(safeline, "lc", i, j + 1));
+                    i = j + 1;
+                    continue;
+                }
+                #endregion
+                #region vals n id
 
                 if (KeySet.isValid(a) || i + 1 == inline.Length)
                 {
@@ -80,7 +135,7 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                                     if (isVarSuitable(localLine))
                                         answer.Last().Items.Add(new MainInformation(localLine, "id", from, i));
                                     else
-                                        answer.Last().Items.Add(new MainInformation(localLine, "error", from, i));
+                                        answer.Last().Items.Add(new MainInformation(localLine, "ERROR2|неизвестная конструкция", from, i));
                                 }
                             }
                         }
@@ -94,6 +149,8 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                     from = i + 1;
                     localLine = "";
                 }
+
+                #endregion
                 else localLine += a;
             }
             return answer;
