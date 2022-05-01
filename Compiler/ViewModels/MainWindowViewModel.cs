@@ -296,7 +296,7 @@ namespace Compiler.ViewModels
             {//если ответ на запрос сохранения да
                 TextEditor tb = TextEditor(SelectedItem);
                 File.WriteAllText(sfd.FileName, tb.Text);//пишем весь текст в файл
-                (SelectedItem.Header as TextBlock).Text = sfd.FileName; //замеяем имяфайла на новое, соответсвующее имени из диалога сохранения
+                ((SelectedItem.Header as StackPanel).Children[0] as TextBlock).Text = sfd.FileName; //замеяем имяфайла на новое, соответсвующее имени из диалога сохранения
             }
         }
         #endregion

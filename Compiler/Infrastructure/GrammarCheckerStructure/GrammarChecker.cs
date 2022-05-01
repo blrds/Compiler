@@ -22,7 +22,7 @@ namespace Compiler.Infrastructure.GrammarCheckerStructure
                 int i = 0;
                 foreach (var a in line.Items)
                 {
-                    if (a.Code.ToLower().Contains("error")) answer.Last().DeclorationErrors.Add(new ArgumentException(a.Code+" "+a.Construction+" " + a.From + ":" + a.To));
+                    if (a.Code.ToLower().Contains("error")) errors.Add(new ArgumentException(a.Code+" "+a.Construction+" " + a.From + ":" + a.To));
                     if (a.Construction != "=" && a.Construction != ";" && a.Code == "vc" || a.Code=="mlc") continue;
                     if (a.Construction == "let" || a.Construction == "var" || a.Construction == "const")
                     {
