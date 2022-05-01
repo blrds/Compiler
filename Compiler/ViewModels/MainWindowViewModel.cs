@@ -35,12 +35,27 @@ namespace Compiler.ViewModels
         private StructureDefinition StructureDefinition = null;
 
 
+
+        //переменные данного региона являются мостами связывающими основную программу и интерфейс
         #region bindingVars
 
-        /// <summary>Collection of the tabs</summary>
+        /// <summary>
+        /// Вкладки с текстовыми редакоторами
+        /// </summary>
         public ObservableCollection<TabItem> TabItems { get; set; }
+
+
+        //функции и переменне необходимые дял контроля и работы вкладок
         #region propsForTabs
+
+        /// <summary>
+        /// Выбранная вклдака
+        /// </summary>
         private TabItem SelectedItem => TabItems.Where(x => x.IsSelected).First();
+
+        /// <summary>
+        /// Выбранный индекс
+        /// </summary>
         private int SelectedIndex
         {
             get
@@ -54,11 +69,21 @@ namespace Compiler.ViewModels
             set => TabItems[value].IsSelected = true;
         }
 
+        /// <summary>
+        /// downcast контента вкладки до текстового поля
+        /// </summary>
+        /// <param name="tab">вкладка, внутри которой есть поле ввода</param>
+        /// <returns> поле ввода</returns>
         private TextEditor TextEditor(TabItem tab)
         {
             return tab.Content as TextEditor;
         }
 
+        /// <summary>
+        /// downcast контента вкладки до текстового поля
+        /// </summary>
+        /// <param name="tab">индекс вкладки</param>
+        /// <returns> поле ввода</returns>
         private TextEditor TextEditor(int index)
         {
             return TextEditor(TabItems[index]);
@@ -66,18 +91,25 @@ namespace Compiler.ViewModels
 
 
         #endregion
-        /// <summary>OutPut  Text</summary>
+        /// <summary>
+        /// Текст окна вывода
+        /// </summary>
         public TextDocument OutputText { get; private set; } = new TextDocument();
 
         #endregion
         #endregion
 
         #region unicFunctions
+
         #region Creation of the text tab with all the settings
+        /// <summary>
+        /// Функция создания новой вкладки
+        /// </summary>
+        /// <param name="name">имя новой вкладки</param>
         void TabCreat(string name)
         {
 
-            TabItems.Add(new TabItem
+            TabItems.Add(new TabItem//в коллекцию допсывае новую вкладку с заданными параметрами
             {
                 Header = new StackPanel { Orientation = Orientation.Horizontal },
                 Content = new TextEditor
@@ -85,10 +117,11 @@ namespace Compiler.ViewModels
                     Margin = new Thickness(5),
                     AllowDrop = true,
                     ShowLineNumbers = true,
-                    SyntaxHighlighting = muplDefenition
+                    SyntaxHighlighting = muplDefenition,
+                    FontSize = 20
                 }
             });
-            var sp = (TabItems.Last().Header as StackPanel);
+            var sp = (TabItems.Last().Header as StackPanel);//в загаловке вкладки пишем имя и создаем кнопку закрытия данной вкладки
             sp.Children.Add(new TextBlock { Text = name });
             var i = sp.Children.Add(new Button
             {
@@ -101,38 +134,56 @@ namespace Compiler.ViewModels
             });
             TabItems.Last().IsSelected = true;
 
-            (sp.Children[i] as Button).Click += closeTab_Click;
-            (TabItems.Last().Content as TextEditor).KeyDown += Input_KeyDown;
-            (TabItems.Last().Content as TextEditor).Drop += main_Drop;
-            (TabItems.Last().Content as TextEditor).PreviewDragOver += main_PreviewDragOver;
+            (sp.Children[i] as Button).Click += closeTab_Click;//событие зарктытия вкладки
+            (TabItems.Last().Content as TextEditor).KeyDown += Input_KeyDown; //событие обработки нажатий на кнопку
+            (TabItems.Last().Content as TextEditor).Drop += main_Drop;//событие, когда файл, который хотят открыть переносят на окно программы
+            (TabItems.Last().Content as TextEditor).PreviewDragOver += main_PreviewDragOver;//проверка перед вносом файла на окно программы
         }
 
 
         #region events of the tabs
+        /// <summary>
+        /// собыитие открытия брошенного файла
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void main_Drop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))//Проверка если это событие есть бросок файла, а не чего-то еще
             {
 
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);//получаем массив строк характеризующих бросаемые файлы
                 foreach (var file in files)
                 {
                     FileInfo fi = new FileInfo(file);
-                    if ((fi.Extension == ".txt") || (fi.Extension == ".mupl"))
-                        OpenFile(file);
+                    if ((fi.Extension == ".txt") || (fi.Extension == ".mupl"))//если файлы соответсвуют требуемым расширениям
+                        OpenFile(file);//отркываем файлы
                 }
             }
         }
+        /// <summary>
+        /// Разрешение броска файла
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void main_PreviewDragOver(object sender, DragEventArgs e)
         {
             e.Handled = true;
         }
-
+        /// <summary>
+        /// событие нажатия на кнопку
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Input_KeyDown(object sender, KeyEventArgs e)
         {
             changesFlag[SelectedIndex] = true;
         }
-
+        /// <summary>
+        /// событие закрытия вкладки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void closeTab_Click(object sender, RoutedEventArgs e)
         {
             var tab = ((sender as Button).Parent as StackPanel).Parent as TabItem;
@@ -144,6 +195,10 @@ namespace Compiler.ViewModels
         #endregion
         #endregion
 
+        /// <summary>
+        /// Открытие файла
+        /// </summary>
+        /// <param name="file">полное имя файла</param>
         private void OpenFile(string file)
         {
             TabCreat(file);
@@ -153,8 +208,12 @@ namespace Compiler.ViewModels
             changesFlag.Add(false);
         }
         #endregion
+
         #region  Commands
 
+        /// <summary>
+        /// Открытие файла
+        /// </summary>
         #region OpenFileCommand
         public ICommand OpenFileCommand { get; }
         private bool CanOpenFileCommnadExecute(object p) => true;
@@ -177,6 +236,9 @@ namespace Compiler.ViewModels
         }
         #endregion
 
+        /// <summary>
+        /// Создание файла
+        /// </summary>
         #region CreateCommand
         public ICommand CreateCommand { get; }
         private bool CanCreateCommnadExecute(object p) => true;
@@ -188,20 +250,24 @@ namespace Compiler.ViewModels
         }
         #endregion
 
+        /// <summary>
+        /// Сохранение файла
+        /// </summary>
         #region SaveCommand
         public ICommand SaveCommand { get; }
         private bool CanSaveCommnadExecute(object p) => (TabItems.Count > 0 ? true : false) && (SelectedIndex != -1);
         private void OnSaveCommandExecuted(object p)
         {
-            if (!saveFlag[SelectedIndex]) { OnSaveAsCommandExecuted(p); return; }
+            if (!saveFlag[SelectedIndex]) { OnSaveAsCommandExecuted(p); return; }//если до этого файл нигде не был сохранен, то вызываем сохранение с диалогом
             else
             {
                 try
                 {
                     TextEditor tb = TextEditor(SelectedItem);
 
-                    File.WriteAllText(((SelectedItem.Header as StackPanel).Children[0] as TextBlock).Text, tb.Text);
+                    File.WriteAllText(((SelectedItem.Header as StackPanel).Children[0] as TextBlock).Text, tb.Text);//пишем весь текст из вкладки в файл
                 }
+                //ловим все ошибки
                 catch (ArgumentException exp) { OutputText.Text = "Данный путь недопустим или содержит недопустимые символы"; }
                 catch (PathTooLongException exp) { OutputText.Text = "Путь или имя файла превышают допустимую длину"; }
                 catch (DirectoryNotFoundException exp) { OutputText.Text = "Указан недопустимый путь (например, он ведет на несопоставленный диск)"; }
@@ -214,25 +280,30 @@ namespace Compiler.ViewModels
 
         #endregion
 
+        /// <summary>
+        /// Сохраить файл через диалог сохранения
+        /// </summary>
         #region SaveAsCommand
         public ICommand SaveAsCommand { get; }
         private bool CanSaveAsCommnadExecute(object p) => (TabItems.Count > 0 ? true : false) && (SelectedIndex != -1);
         private void OnSaveAsCommandExecuted(object p)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
+            SaveFileDialog sfd = new SaveFileDialog();//создаем диалог сохранения файла и настраиваем его
             sfd.AddExtension = true;
             sfd.Filter = "mupl files (*.mupl)|*.mupl|txt files (*.txt)|*.txt";
             sfd.RestoreDirectory = true;
-            if (sfd.ShowDialog() == true)
-            {
+            if (sfd.ShowDialog() == true)//показываем диалог и ждем пока пользователь выйдет из него
+            {//если ответ на запрос сохранения да
                 TextEditor tb = TextEditor(SelectedItem);
-                File.WriteAllText(sfd.FileName, tb.Text);
-                OutputText.Text = "Успешно";
-                (SelectedItem.Header as TextBlock).Text = sfd.FileName;
+                File.WriteAllText(sfd.FileName, tb.Text);//пишем весь текст в файл
+                (SelectedItem.Header as TextBlock).Text = sfd.FileName; //замеяем имяфайла на новое, соответсвующее имени из диалога сохранения
             }
         }
         #endregion
 
+        /// <summary>
+        /// команда выхода
+        /// </summary>
         #region ExitCommand
         public ICommand ExitCommand { get; }
         private bool CanExitCommnadExecute(object p) => true;
@@ -242,6 +313,9 @@ namespace Compiler.ViewModels
         }
         #endregion
 
+        /// <summary>
+        /// вызов справки
+        /// </summary>
         #region ReferenceCommand
         public ICommand ReferenceCommand { get; }
         private bool CanReferenceCommnadExecute(object p) => true;
@@ -252,6 +326,9 @@ namespace Compiler.ViewModels
         }
         #endregion
 
+        /// <summary>
+        /// вызов о программе
+        /// </summary>
         #region AboutCommand
         public ICommand AboutCommand { get; }
         private bool CanAboutCommnadExecute(object p) => true;
@@ -262,6 +339,9 @@ namespace Compiler.ViewModels
         }
         #endregion
 
+        /// <summary>
+        /// Разложение строки через сканер
+        /// </summary>
         #region StringDecompilationCommand
         public ICommand StringDecompilationCommand { get; }
         private bool CanStringDecompilationCommnadExecute(object p)
@@ -275,13 +355,13 @@ namespace Compiler.ViewModels
             string fullText = "";
             if (TextEditor(SelectedItem).SelectedText != "")
                 fullText = TextEditor(SelectedItem).SelectedText;
-            else fullText = TextEditor(SelectedItem).Text;
-            if (StructureDefinition == null) StructureDefinition = new StructureDefinition();
-            var lines = StructureDefinition.Decomposite(fullText);
-            var answer = GrammarChecker.VariablesDecloration(lines);
+            else fullText = TextEditor(SelectedItem).Text; //на обработку поступает выбранный текст или весь текст файла, если выбранного нет
+            if (StructureDefinition == null) StructureDefinition = new StructureDefinition();//создаем экземпляр лексера
+            var lines = StructureDefinition.Decomposite(fullText);//получаем строку из кодов распознанных лексем
+            var answer = GrammarChecker.VariablesDecloration(lines);//получаем набор переменных после обработки автоматом
             OutputText.Text = "";
             foreach (var a in answer)
-            {
+            {//записываем переменные и ошибки в вывод
                 OutputText.Text += a.ToString() + "\n";
                 foreach (var b in a.DeclorationErrors)
                     OutputText.Text += b.Message + "\n";
@@ -289,6 +369,11 @@ namespace Compiler.ViewModels
         }
         #endregion
 
+
+        /// <summary>
+        /// Все команды данного региона открывают один и тот же пдф файл в разных позициях
+        /// </summary>
+        #region PDF File work
         #region StatementCommand
 
         public ICommand StatementCommand { get; }
@@ -296,7 +381,7 @@ namespace Compiler.ViewModels
         private void OnStatementCommandExecuted(object p)
         {
             FileInfo fileInfo = new FileInfo("kr.pdf");
-            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://"+fileInfo.FullName+"#page=3"));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=3"));
         }
 
         #endregion
@@ -379,10 +464,17 @@ namespace Compiler.ViewModels
 
         #endregion
 
+        #endregion
 
         #endregion
 
+        /// <summary>
+        /// Собития 
+        /// </summary>
         #region Events
+        /// <summary>
+        /// Собитие закрытия текстового поля
+        /// </summary>
         public void main_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             for (int i = 0; i < TabItems.Count; ++i)

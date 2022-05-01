@@ -5,151 +5,192 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Compiler" 
         xmlns:fa="http://schemas.fontawesome.com/icons/"
-        xmlns:vm="clr-namespace:Compiler.ViewModels" 
+        xmlns:vm="clr-namespace:Compiler.ViewModels"
         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
         Title="Compiler" Height="450" Width="800" Name="main" MinHeight="300" MinWidth="300">
+
     <Window.DataContext>
+        <!--подключаем viewmodel-->
         <vm:MainWindowViewModel/>
     </Window.DataContext>
     <Grid >
         <Grid.RowDefinitions>
+            <!--разметка на 5 строк-->
+            <!--строка с меню-->
             <RowDefinition Height="Auto"/>
+            <!--строка для меню быстрого доступа-->
             <RowDefinition Height="40"/>
+            <!--строка для окна ввода-->
             <RowDefinition Height="190*"/>
+            <!--строка-разделитель, чтобы регулировать соотнощение с окон ввода и вывода-->
             <RowDefinition Height="Auto"/>
+            <!--строка для окна вывода-->
             <RowDefinition Height="190*"/>
         </Grid.RowDefinitions>
+
+        <!--все команды(элементы Command="{Binding ...}") находятся в файле MainWindowViewModel-->
+        <!--команды типа Сommand="..." являются втроенным фукционалом текстового поля-->
+
+        <!--меню-->
         <Menu Height="Auto">
+            <!--выпадающее меню действий с файлом-->
             <MenuItem Margin="5" >
                 <MenuItem.Header>
                     <TextBlock Text="Файл"/>
                 </MenuItem.Header>
+                <!--кнопка создания файла-->
                 <MenuItem Command="{Binding CreateCommand}" >
                     <MenuItem.Header>
                         <TextBlock Text="Создать"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--кнопка открытия файла-->
                 <MenuItem Command="{Binding OpenFileCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Откртыть"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--кнопка сохрения файла-->
                 <MenuItem Name="save" Command="{Binding SaveCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Сохранить"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--кнопка сохранения файла с диалогом сохранения-->
                 <MenuItem Name="saveAs" Command="{Binding SaveAsCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Сохранить как"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--кнопка выхода-->
                 <MenuItem Name="exit" Command="{Binding ExitCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Выход"/>
                     </MenuItem.Header>
                 </MenuItem>
             </MenuItem>
+            <!--выподающее меню правки-->
             <MenuItem Margin="5">
+                
                 <MenuItem.Header>
                     <TextBlock Text="Правка"/>
                 </MenuItem.Header>
+                <!--кнопка отмены последнего действия-->
                 <MenuItem Command="Undo">
                     <MenuItem.Header>
                         <TextBlock Text="Отменить"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--кнопка возврата отмененного действия-->
                 <MenuItem Command="Redo">
                     <MenuItem.Header>
                         <TextBlock Text="Повторить"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--Кнопка выреза выделенного элемена-->
                 <MenuItem Command="Cut">
                     <MenuItem.Header>
                         <TextBlock Text="Вырезать"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--Кнопка копирования выделенного текста-->
                 <MenuItem Command="Copy">
                     <MenuItem.Header>
                         <TextBlock Text="Копировать"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--Кнопка вставить на место каретки/вместо выделенного текста-->
                 <MenuItem Command="Paste">
                     <MenuItem.Header>
                         <TextBlock Text="Вставить"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--Кнопка удаления выделенного фрагмента-->
                 <MenuItem Command="Delete">
                     <MenuItem.Header>
                         <TextBlock Text="Удалить"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--Кнопка выделения всего файла-->
                 <MenuItem Command="SelectAll">
                     <MenuItem.Header>
                         <TextBlock Text="Выделить все"/>
                     </MenuItem.Header>
                 </MenuItem>
             </MenuItem>
+            <!--Выпадающее меню текстовых пояснений-->
             <MenuItem Margin="5">
                 <MenuItem.Header>
                     <TextBlock Text="Текст"/>
                 </MenuItem.Header>
+                <!--Кнопка постановки задачи-->
                 <MenuItem Name="task" Command="{Binding StatementCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Постановка задачи"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--Кнопка грамматики-->
                 <MenuItem Name="grammar" Command="{Binding GrammarCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Грамматика"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--Кнопка классификации грамматики-->
                 <MenuItem Name="grammarClass" Command="{Binding GrammarClassificationCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Классификация грамматики"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--Кнопка метода анализа-->
                 <MenuItem Name="analisMethod" Command="{Binding AnalysisMethodCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Метод анализа"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--Кнопка диагностики ошибок-->
                 <MenuItem Name="errors" Command="{Binding ErrorsResolveCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Диагностика и нейтрализация ошибок"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--Кнопка примеров-->
                 <MenuItem Name="example" Command="{Binding TestsCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Тестовый пример"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--Кнопка списка литературы-->
                 <MenuItem Name="literature" Command="{Binding LiteratureCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Список литературы"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--Кнопка исходного кода программы-->
                 <MenuItem Command="{Binding CodeCommand}">
                     <MenuItem.Header >
                         <TextBlock Text="Исходный код программы"/>
                     </MenuItem.Header>
                 </MenuItem>
             </MenuItem>
+            <!--Кнопка запуска обработки-->
             <MenuItem Margin="5" Command="{Binding StringDecompilationCommand}">
                 <MenuItem.Header>
                     <TextBlock Text="Пуск"/>
                 </MenuItem.Header>
             </MenuItem>
+            <!--Выпадающий список справки-->
             <MenuItem Margin="5">
                 <MenuItem.Header>
                     <TextBlock Text="Справка"/>
                 </MenuItem.Header>
+                <!--Кнопка справки-->
                 <MenuItem Name="referenceCall" Command="{Binding ReferenceCommand}">
                     <MenuItem.Header>
                         <TextBlock Text="Вызов справки"/>
                     </MenuItem.Header>
                 </MenuItem>
+                <!--Кнопка посвященная создателю-->
                 <MenuItem Name="about" Command="{Binding AboutCommand}" >
                     <MenuItem.Header>
                         <TextBlock Text="О программе"/>
@@ -157,54 +198,67 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
+        <!--Меню быстрого доступа-->
         <ToolBar Grid.Row="1">
+            <!--Создать файл-->
             <Button Command="{Binding CreateCommand}">
                 <Button.Content>
                     <fa:ImageAwesome Icon="Regular_File"/>
                 </Button.Content>
             </Button>
+            <!--Открыть файл-->
             <Button Command="{Binding OpenFileCommand}">
                 <Button.Content>
                     <fa:ImageAwesome Icon="Regular_FolderOpen"/>
                 </Button.Content>
             </Button>
+            <!--Сохранить файл-->
             <Button Command="{Binding SaveCommand}" VerticalAlignment="Bottom">
                 <Button.Content>
                     <fa:ImageAwesome Icon="Regular_Save"/>
                 </Button.Content>
             </Button>
+            <!--Разделитеь(визуально, вертикальная серая палочка)-->
             <Separator/>
+            <!--Отмена-->
             <Button Command="Undo">
                 <Button.Content>
                     <fa:ImageAwesome Icon="Solid_CaretLeft"/>
                 </Button.Content>
             </Button>
+            <!--Возврат отмены-->
             <Button Command="Redo">
-                <Button.Content>    
+                <Button.Content>
                     <fa:ImageAwesome Icon="Solid_CaretRight"/>
                 </Button.Content>
             </Button>
+            <!--Вырезать-->
             <Button Command="Cut">
                 <Button.Content>
                     <fa:ImageAwesome Icon="Solid_Cut"/>
                 </Button.Content>
             </Button>
+            <!--Копировать-->
             <Button Command="Copy">
                 <Button.Content>
                     <fa:ImageAwesome Icon="Solid_Copy"/>
                 </Button.Content>
             </Button>
+            <!--Вставить-->
             <Button Command="Paste">
                 <Button.Content>
                     <fa:ImageAwesome Icon="Solid_Paste"/>
                 </Button.Content>
             </Button>
         </ToolBar>
+        <!--Блок вкладок файлов. Самих вкладок нет, так как они создаются программно во время открытия файлов-->
         <TabControl Grid.Row="2" Name ="tabs" ItemsSource="{Binding TabItems}">
-            
+
         </TabControl>
+        <!--Разделитель см. строку 27-->
         <GridSplitter Grid.Row="3" Height="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Black"/>
-        <avalonEdit:TextEditor Grid.Row="4" Margin="5" IsReadOnly="True" Name="output" ShowLineNumbers="True" SyntaxHighlighting="C#" Document="{Binding OutputText}">
+        <!--Окно вывода-->
+        <avalonEdit:TextEditor Grid.Row="4" Margin="5" IsReadOnly="True" Name="output" ShowLineNumbers="True" SyntaxHighlighting="C#" Document="{Binding OutputText}" FontSize="20">
 
         </avalonEdit:TextEditor>
     </Grid>
