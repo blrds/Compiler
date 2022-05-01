@@ -381,7 +381,7 @@ namespace Compiler.ViewModels
         private void OnStatementCommandExecuted(object p)
         {
             FileInfo fileInfo = new FileInfo("kr.pdf");
-            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=3"));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=5"));
         }
 
         #endregion
@@ -392,7 +392,7 @@ namespace Compiler.ViewModels
         private void OnGrammarCommandExecuted(object p)
         {
             FileInfo fileInfo = new FileInfo("kr.pdf");
-            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=4"));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=6"));
         }
 
         #endregion
@@ -404,7 +404,7 @@ namespace Compiler.ViewModels
         private void OnGrammarClassificationCommandExecuted(object p)
         {
             FileInfo fileInfo = new FileInfo("kr.pdf");
-            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=5"));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=7"));
         }
 
         #endregion
@@ -415,7 +415,7 @@ namespace Compiler.ViewModels
         private void OnAnalysisMethodCommandExecuted(object p)
         {
             FileInfo fileInfo = new FileInfo("kr.pdf");
-            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=8"));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=10"));
         }
 
         #endregion
@@ -426,7 +426,7 @@ namespace Compiler.ViewModels
         private void OnErrorsResolveCommandExecuted(object p)
         {
             FileInfo fileInfo = new FileInfo("kr.pdf");
-            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=9"));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=11"));
         }
 
         #endregion
@@ -437,7 +437,7 @@ namespace Compiler.ViewModels
         private void OnTestsCommandExecuted(object p)
         {
             FileInfo fileInfo = new FileInfo("kr.pdf");
-            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=11"));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=12"));
         }
 
         #endregion
@@ -448,7 +448,7 @@ namespace Compiler.ViewModels
         private void OnLiteratureCommandExecuted(object p)
         {
             FileInfo fileInfo = new FileInfo("kr.pdf");
-            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=10"));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=14"));
         }
 
         #endregion
@@ -459,7 +459,7 @@ namespace Compiler.ViewModels
         private void OnCodeCommandExecuted(object p)
         {
             FileInfo fileInfo = new FileInfo("kr.pdf");
-            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=16"));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start microsoftedge file://" + fileInfo.FullName + "#page=18"));
         }
 
         #endregion
