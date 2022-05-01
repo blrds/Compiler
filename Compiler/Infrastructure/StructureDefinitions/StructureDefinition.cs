@@ -38,23 +38,23 @@ namespace Compiler.Infrastructure.StructureDefinitions.Base
                 a = inline[i];
                 #region str
 
-                if (KeySet.isStringChar(a) && localLine == "")
-                {
-                    from = i;
-                    int j = i + 1;
-                    localLine += '"';
-                    for (; j < inline.Length; j++)
-                    {
-                        localLine += inline[j];
-                        if (j + 1 == inline.Length || inline[j] == '"') break;
-                    }
-                    if (j + 1 == inline.Length && inline[j] != '"') answer.Last().Items.Add(new MainInformation(localLine, "ERROR1|Uncompleted string", from, j));
-                    else answer.Last().Items.Add(new MainInformation(localLine, "string", from, j + 1));
-                    i = j;
-                    localLine = "";
-                    from = i;
-                    continue;
-                }
+                //if (KeySet.isStringChar(a) && localLine == "")
+                //{
+                //    from = i;
+                //    int j = i + 1;
+                //    localLine += '"';
+                //    for (; j < inline.Length; j++)
+                //    {
+                //        localLine += inline[j];
+                //        if (j + 1 == inline.Length || inline[j] == '"') break;
+                //    }
+                //    if (j + 1 == inline.Length && inline[j] != '"') answer.Last().Items.Add(new MainInformation(localLine, "ERROR1|Uncompleted string", from, j));
+                //    else answer.Last().Items.Add(new MainInformation(localLine, "string", from, j + 1));
+                //    i = j;
+                //    localLine = "";
+                //    from = i;
+                //    continue;
+                //}
                 #endregion
                 #region mlc
                 if (i <= inline.Length - 5 && Regex.Escape(a + "" + inline[i + 1]) == KeySet.MultiLineBrackets.Item1.Construction)

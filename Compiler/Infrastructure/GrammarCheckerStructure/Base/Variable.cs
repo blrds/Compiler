@@ -17,7 +17,7 @@ namespace Compiler.Models
             DeclorationErrors = new List<ArgumentException>();
             Decloration = "const";
             Name = "a";
-            Value = null;
+            Value = 0;
             Type = "";
             isCorrect = false;
         }
