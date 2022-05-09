@@ -8,10 +8,8 @@ namespace ConTest
         static void Main(string[] args)
         {
 
-            var a = "tRuE";
-            var b = Boolean.Parse(a);
-            Console.WriteLine(b.ToString());
-
+            string a = "(asd)";
+            Console.WriteLine(a.Substring(1, line.Length - 2));
         }
     }
 }

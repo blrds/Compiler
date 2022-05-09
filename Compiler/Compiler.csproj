@@ -71,6 +71,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Infrastructure\GrammarCheckerStructure\GrammarChecker.cs" />
+    <Compile Include="Infrastructure\Recursive\Recursive.cs" />
     <Compile Include="Infrastructure\StructureDefinitions\Base\KeySet.cs" />
     <Compile Include="Infrastructure\StructureDefinitions\Base\Line.cs" />
     <Compile Include="Infrastructure\StructureDefinitions\Base\MainInformation.cs" />

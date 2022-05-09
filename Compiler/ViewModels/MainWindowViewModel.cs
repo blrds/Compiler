@@ -19,6 +19,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Diagnostics;
+using Compiler.Infrastructure.Recursive;
 
 namespace Compiler.ViewModels
 {
@@ -356,15 +357,18 @@ namespace Compiler.ViewModels
             if (TextEditor(SelectedItem).SelectedText != "")
                 fullText = TextEditor(SelectedItem).SelectedText;
             else fullText = TextEditor(SelectedItem).Text; //на обработку поступает выбранный текст или весь текст файла, если выбранного нет
-            if (StructureDefinition == null) StructureDefinition = new StructureDefinition();//создаем экземпляр лексера
+            /*if (StructureDefinition == null) StructureDefinition = new StructureDefinition();//создаем экземпляр лексера
             var lines = StructureDefinition.Decomposite(fullText);//получаем строку из кодов распознанных лексем
-            var answer = GrammarChecker.VariablesDecloration(lines);//получаем набор переменных после обработки автоматом
+            var answer = GrammarChecker.VariablesDecloration(lines);//получаем набор переменных после обработки автоматом*/
+            
+            Recursive r = new Recursive();
+            var answer = r.Start(fullText);
             OutputText.Text = "";
             foreach (var a in answer)
             {//записываем переменные и ошибки в вывод
                 OutputText.Text += a.ToString() + "\n";
-                foreach (var b in a.DeclorationErrors)
-                    OutputText.Text += b.Message + "\n";
+                /*foreach (var b in a.DeclorationErrors)
+                    OutputText.Text += b.Message + "\n";*/
             }
         }
         #endregion
